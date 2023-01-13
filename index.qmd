@@ -1,7 +1,15 @@
 ---
-title: "IS415 GAA"
+title: "IS415 Geospatial Analytics and Application"
 ---
 
-Welcome to IS415 **Geospatial Analytics and Applications**.
+::: {style="text-align:center;"}
+**Welcome to IS415 Geospatial Analytics and Applications**
+:::
 
-This is the course website of IS415 AY2022/2023 Term 2. You will find my course work on this website.
+This is the course website for Kwek Ming Rong of IS415 AY2022/2023 Term 2. You will find his course work on this website.
+
+![](https://d33wubrfki0l68.cloudfront.net/f0d1c8993264c42a9c63b2fb90a782ee548b0d55/40d88/src/img/background-photo.jpg){fig-align="center"}
+
+::: {style="color:blue; text-align:center;"}
+**A Geospatial Environment for Everyone !**
+:::
