@@ -86,4 +86,3 @@ waterpoint_sf <- st_as_sf(waterpoint,
                        crs=4326) %>%
   st_transform(crs = 26391)
 ```
-
