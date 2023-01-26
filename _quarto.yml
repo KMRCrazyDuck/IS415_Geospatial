@@ -16,7 +16,7 @@ website:
           - href: "In-class_Ex/In-class_Ex02.html"
             text: "In Class Exercise 2"
           - href: "In-class_Ex/In-class_Ex03.html"
-            text: "In Class Exercise 3"
+            text: "In Class Exercise 3s"
     right:
       - href: index.qmd
         text: Home
