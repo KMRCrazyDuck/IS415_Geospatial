@@ -145,5 +145,19 @@
     "title": "In-class Exercise 2: Geospatial Data Wrangling",
     "section": "4.5 Plotting the Distribution of Total Water Points by LGA in Histogram",
     "text": "4.5 Plotting the Distribution of Total Water Points by LGA in Histogram\nNext, we will use mutate() of dplyr package to compute the proportion of Functional and Non- water points.\nThis is given by Functional Proportion = Functional Count / Total Count.\n\nggplot(data = nigeria_wp,\n       aes(x = total_wp)) +\n  geom_histogram(bins = 20,\n                 color = \"black\",\n                 fill = \"light blue\") +\n  geom_vline(aes(xintercept = mean(\n    total_wp, na.rm = T)),\n    color = \"red\",\n    linetype = \"dashed\",\n    size = 0.8) +\n  ggtitle(\"Distribution of total water points by LGA\") +\n  xlab(\"No. of water points\") +\n  ylab(\"No of\\nLGAs\") +\n  theme(axis.title.y = element_text(angle = 0))"
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex03.html",
+    "href": "In-class_Ex/In-class_Ex03.html",
+    "title": "In-class Exercise 3: Analytical Mapping",
+    "section": "",
+    "text": "In this in-class exercise, you will gain hands-on experience on using appropriate R methods to plot analytical maps. For the purpose of this exercise, Nigeria water point data prepared during In-class Exercise 2 will be used.\n\n\n\nBy the end of this in-class exercise, you will be able to use appropriate functions of tmap and tidyverse to perform the following tasks:\n\nImporting geospatial data in rds format into R environment.\nCreating cartographic quality choropleth maps by using appropriate tmap functions.\nCreating rate map\nCreating percentile map\nCreating boxmap"
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex03.html#installing-and-loading-packages",
+    "href": "In-class_Ex/In-class_Ex03.html#installing-and-loading-packages",
+    "title": "In-class Exercise 3: Analytical Mapping",
+    "section": "2.1 Installing and Loading Packages",
+    "text": "2.1 Installing and Loading Packages\nFirstly, the code below will check if pacman has been installed. If it has not been installed, R will download and install it, before activating it for use during this session.\n\nif (!require('pacman', character.only = T)){\n  install.packages('pacman')\n}\nlibrary('pacman')\n\nNext, pacman assists us by helping us load R packages that we require, sf, tidyverse and tmap.\n\npacman::p_load(sf, tidyverse, tmap)"
   }
 ]
