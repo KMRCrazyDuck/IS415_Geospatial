@@ -1,0 +1,9 @@
+---
+title: "In-class Exercise 3: Analytical Mapping"
+date: "`r Sys.Date()`"
+format: html
+execute:
+  message: false
+  warning: false
+editor: visual
+---
