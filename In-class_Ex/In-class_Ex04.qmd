@@ -1,0 +1,82 @@
+---
+title: "In-class Exercise 4"
+author: "Kwek Ming Rong"
+date: "30 January 2023"
+date-modified: "`r Sys.Date()`"
+format: html
+execute:
+  eval: true
+  echo: true
+  warning: false
+editor: visual
+---
+
+# 4. Getting Started
+
+## 4.1 Installing and Loading the R packages
+
+In this hands-on exercise, five R packages will be used, they are:
+
+-   [**sf**](https://r-spatial.github.io/sf/), a relatively new R package specially designed to import, manage and process vector-based geospatial data in R.
+
+-   [**spatstat**](https://spatstat.org/), which has a wide range of useful functions for point pattern analysis. In this hands-on exercise, it will be used to perform 1st- and 2nd-order spatial point patterns analysis and derive kernel density estimation (KDE) layer.
+
+-   [**raster**](https://cran.r-project.org/web/packages/raster/) which reads, writes, manipulates, analyses and model of gridded spatial data (i.e. raster). In this hands-on exercise, it will be used to convert image output generate by spatstat into raster format.
+
+-   [**maptools**](https://cran.r-project.org/web/packages/maptools/) which provides a set of tools for manipulating geographic data. In this hands-on exercise, we mainly use it to convert *Spatial* objects into *ppp* format of **spatstat**.
+
+-   [**tmap**](https://cran.r-project.org/web/packages/tmap/) which provides functions for plotting cartographic quality static point patterns maps or interactive maps by using [leaflet](https://leafletjs.com/) API.
+
+Use the code chunk below to install and launch the five R packages.
+
+```{r}
+pacman::p_load(maptools, sf, raster, spatstat, tmap)
+```
+
+## 4.2 Importing Data
+
+Things to learn from this code chunk.
+
+```{r}
+childcare_sf <- st_read("data/Geospatial/childcare.geojson") %>%
+  st_transform(crs = 3414)
+```
+
+```{r}
+sg_sf <- st_read(dsn = "data/Geospatial", layer="CostalOutline")
+```
+
+```{r}
+mpsz_sf <- st_read(dsn = "data/geospatial", 
+                layer = "MP14_SUBZONE_WEB_PL")
+```
+
+## 4.3 Converting sf data frames to sp's Spatial\* class
+
+The code chunk below uses as_Spatial() of sf package to convert the three geospatial data from simple feature data frame to sp's Spatial\* class.
+
+```{r}
+childcare <- as_Spatial(childcare_sf)
+mpsz <- as_Spatial(mpsz_sf)
+sg <- as_Spatial(sg_sf)
+```
+
+## 4.4 Converting the Spatial\* class into generic sp format
+
+spatstat requires the analytical data in ppp object form. There is no direct way to convert a Spatial\* classes into ppp object. We need to convert the Spatial classes\* into Spatial object first.
+
+The codes chunk below converts the Spatial\* classes into generic sp objects dropping the table from the dataframe.
+
+```{r}
+childcare_sp <- as(childcare, "SpatialPoints")
+sg_sp <- as(sg, "SpatialPolygons")
+```
+
+## 4.5 Converting the generic sp format into spatstat’s ppp format
+
+Now, we will use as.ppp() function of spatstat to convert the spatial data into spatstat’s ppp object format.
+
+```{r}
+childcare_ppp <- as(childcare_sp, "ppp")
+childcare_ppp
+```

@@ -176,7 +176,9 @@ childcare_ppp
 
 Now, let us plot childcare_ppp and examine the different.
 
+```{r}
 plot(childcare_ppp)
+```
 
 You can take a quick look at the summary statistics of the newly created ppp object by using the code chunk below.
 
