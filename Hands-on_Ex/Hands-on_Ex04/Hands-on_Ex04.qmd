@@ -1,5 +1,5 @@
 ---
-title: "Hands-on Exercise 3: 1st Order Spatial Point Pattern Analysis Methods"
+title: "Hands-on Exercise 4: 1st Order Spatial Point Pattern Analysis Methods"
 execute: 
   warning: false
 date: "`r Sys.Date()`"
@@ -300,7 +300,7 @@ The code chunk below computes a kernel density by using the following configurat
 
 -   [*bw.diggle()*](https://rdrr.io/cran/spatstat/man/bw.diggle.html) automatic bandwidth selection method. Other recommended methods are [*bw.CvL()*](https://rdrr.io/cran/spatstat/man/bw.CvL.html), [*bw.scott()*](https://rdrr.io/cran/spatstat/man/bw.scott.html) or [*bw.ppl()*](https://rdrr.io/cran/spatstat/man/bw.ppl.html).\
 
--   The smoothing kernel used is *gaussian*, which is the default. Other smoothing methods are: \"epanechnikov\", \"quartic\" or \"disc\".\
+-   The smoothing kernel used is *gaussian*, which is the default. Other smoothing methods are: "epanechnikov", "quartic" or "disc".\
 
 -   The intensity estimate is corrected for edge effect bias by using method described by Jones (1993) and Diggle (2010, equation 18.9). The default is *FALSE*.
 
@@ -317,7 +317,7 @@ The plot() function of Base R is then used to display the kernel density derived
 plot(kde_childcareSG_bw)
 ```
 
-The density values of the output range from 0 to 0.000035 which is way too small to comprehend. This is because the default unit of measurement of svy21 is in meter. As a result, the density values computed is in “number of points per square meter”.
+The density values of the output range from 0 to 0.000035 which is way too small to comprehend. This is because the default unit of measurement of svy21 is in meter. As a result, the density values computed is in "number of points per square meter".
 
 Before we move on to next section, it is good to know that you can retrieve the bandwidth used to compute the kde layer by using the code chunk below.
 
@@ -485,7 +485,7 @@ tm_shape(kde_childcareSG_bw_raster) +
   tm_layout(legend.position = c("right", "bottom"), frame = FALSE)
 ```
 
-Notice that the raster values are encoded explicitly onto the raster pixel using the values in “v”” field.
+Notice that the raster values are encoded explicitly onto the raster pixel using the values in "v"" field.
 
 ### 4.7.5 Comparing Spatial Point Patterns using KDE
 
@@ -522,6 +522,7 @@ tm_sp = as(tm, "SpatialPolygons")
 ck_sp = as(ck, "SpatialPolygons")
 jw_sp = as(jw, "SpatialPolygons")
 ```
+
 #### 4.7.5.3 Creating owin object
 
 Now, we will convert these SpatialPolygons objects into owin objects that is required by spatstat.
@@ -534,6 +535,7 @@ jw_owin = as(jw_sp, "owin")
 ```
 
 #### 4.7.5.4 Combining childcare points and the study area
+
 By using the code chunk below, we are able to extract childcare that is within the specific region to do our analysis later on.
 
 ```{r}
@@ -631,6 +633,7 @@ H1= The distribution of childcare services are not randomly distributed.
 The 95% confident interval will be used.
 
 ### 4.8.1 Testing spatial point patterns using Clark and Evans Test
+
 ```{r}
 clarkevans.test(childcareSG_ppp,
                 correction="none",
