@@ -18,3 +18,99 @@ editor: visual
 As discussed in class, a point pattern dataset contains a complete enumeration of events (i.e., objects of interest) occurring in a defined study region. These events could represent anything with a measurable location including traffic accidents, crime occurrences, social service location, business establishment locations, etc. In addition to locational information, each event could have an associated continuous (e.g., number of students, volume of sales) or categorical measurement (e.g., type of schools, operators of the fast food chains). The measurements are called **marks** and the events with marks are called a **marked point pattern**.
 
 Marked point patterns have first-order properties, which are related to the intensity (i.e., density) of events and associated marks across the study region, and second-order properties, which are related to the spatial dependence (i.e., spatial arrangement) of the events and associated marks across the study area.
+
+### 6.1.1 The research questions
+
+The specific question we would like to answer is:
+
+-   are the locations of childcare centre by different business groups (i.e. NT, PT, RC, ST) spatial independent?
+
+-   If the answer is NO, are there any phenomena of attraction or repulsion?
+
+### 6.1.2 The data
+
+To provide answer to the questions above, two data sets will be used. They are:
+
+-   Childcare centre: The original data is in KML format. It has been converted into ESRI shapefile format.
+
+-   URA Master Plan Subzone 2014: It is in ESRI shapefile format.
+
+Both data sets were downloaded from Data.gov.
+
+## 6.2 Installing and Loading the R packages
+
+For the purpose of this study, five R packages will be used. They are:
+
+-   rgdal for importing geospatial data in GIS file format such as shapefile into R and save them as Spatial\*DataFrame,
+
+-   maptools for converting Spatial\* object into ppp object,
+
+-   raster for handling raster data in R,
+
+-   spatstat for performing Spatial Point Patterns Analysis such as kcross, Lcross, etc., and
+
+-   tmap for producing cartographic quality thematic maps.
+
+```{r}
+pacman::p_load(rgdal, maptools, raster, spatstat, tmap)
+```
+
+## 6.3 Importing the Geospatial Data
+
+The code chunk below uses readOGR() of rgdal package to import both geospatial data files (i.e. shapefile) into R.
+
+```{r}
+childcare <- readOGR(dsn = "data/geospatial", layer="CHILDCARE")
+```
+
+```{r}
+mpsz = readOGR(dsn = "data/geospatial", layer="MP14_SUBZONE_WEB_PL")
+```
+
+Since, readOGR() of rgdal package is used, the output R objectswill be in SpatialPointsDataframe and SpatialPolygonsDataframe classes respectively.
+
+Next str() of Base R will be used to check the data type of childcare SpatialPointsDataFrame. This is necessary because the marked field must be in factor data type if its values are categorical.
+
+```{r}
+str(childcare)
+```
+
+The output above shows that Type field is in character data type and not in factor data type as required by spatstat package. Hence, the code chunk below will be used to convert Type field to factor data type.
+
+```{r}
+childcare@data$Type <- as.factor(childcare@data$Type)
+```
+
+To check if data type is in factor
+
+```{r}
+str(childcare@data$Type)
+```
+
+## 6.4 Mapping the geospatial layers
+
+Next, let us take a quick look at the distribution of the geospatial data. In the code chunk below, mapping functions of **tmap** package is used. `tmap_mode("view")` is used to plot an interactive map by using [leaflet](https://leafletjs.com/) api.
+
+```{r}
+tmap_mode("view")
+tm_shape(mpsz) + 
+  tm_borders(alpha = 0.5) +
+  tmap_options(check.and.fix = TRUE) +
+tm_shape(childcare) +
+  tm_dots(col = 'Type', size = 0.02)
+```
+
+```{r}
+tmap_mode("plot")
+```
+
+Alternatively, we can use the code chunk below to create four small point maps by using tm_facets() of tmap pckage.
+
+```{r}
+tm_shape(mpsz) +
+  tm_borders(alpha = 0.5) +
+tm_shape(childcare) +
+  tm_dots(col = 'Type', 
+          size = 0.5) +
+tm_facets(by="Type")
+```
