@@ -1,0 +1,20 @@
+---
+title: "Hands on Exercise 6"
+author: "Kwek Ming Rong"
+date: "03 February 2023"
+date-modified: "`r Sys.Date()`"
+format: html
+execute:
+  eval: true
+  echo: true
+  warning: false
+editor: visual
+---
+
+# 6 Analysing Marked Point Patterns
+
+## 6.1 Overview
+
+As discussed in class, a point pattern dataset contains a complete enumeration of events (i.e., objects of interest) occurring in a defined study region. These events could represent anything with a measurable location including traffic accidents, crime occurrences, social service location, business establishment locations, etc. In addition to locational information, each event could have an associated continuous (e.g., number of students, volume of sales) or categorical measurement (e.g., type of schools, operators of the fast food chains). The measurements are called **marks** and the events with marks are called a **marked point pattern**.
+
+Marked point patterns have first-order properties, which are related to the intensity (i.e., density) of events and associated marks across the study region, and second-order properties, which are related to the spatial dependence (i.e., spatial arrangement) of the events and associated marks across the study area.
