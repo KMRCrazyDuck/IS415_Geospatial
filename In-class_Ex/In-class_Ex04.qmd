@@ -351,3 +351,5 @@ L_tm.csr <- envelope(childcare_tm_ppp, Lest, nsim = 99, rank = 1, glocal=TRUE)
 plot(L_tm.csr, . - r ~ r, 
      xlab="d", ylab="L(d)-r", xlim=c(0,500))
 ```
+
+End
