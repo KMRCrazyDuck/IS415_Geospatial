@@ -97,6 +97,7 @@ tm_shape(childcare_sf) +
           size = 0.01) +
   tm_view(set.zoom.limits = c(11,14)) ## 11 is zoom out value, 14 zoom in value
 ```
+
 ## 5.6 Converting the Spatial\* class into generic sp format
 
 spatstat requires the analytical data in ppp object form. There is no direct way to convert a Spatial\* classes into ppp object. We need to convert the Spatial classes\* into Spatial object first.
@@ -125,7 +126,7 @@ multiplicity(childcare_ppp)
 sum(multiplicity(childcare_ppp) > 1)
 ```
 
-Jittering approach 
+Jittering approach
 
 ```{r}
 childcare_ppp_jit <- rjitter(childcare_ppp, 
@@ -193,8 +194,8 @@ childcare_ck_ppp = childcare_ppp_jit[ck_owin]
 childcare_jw_ppp = childcare_ppp_jit[jw_owin]
 ```
 
-
 Converting from metre to kilometre
+
 ```{r}
 childcare_pg_ppp.km = rescale(childcare_pg_ppp, 1000, "km")
 childcare_tm_ppp.km = rescale(childcare_tm_ppp, 1000, "km")
@@ -217,6 +218,7 @@ plot(childcare_jw_ppp.km, main="Jurong West")
 The G function measures the distribution of the distances from an arbitrary event to its nearest event. In this section, you will learn how to compute G-function estimation by using Gest() of spatstat package. You will also learn how to perform monta carlo simulation test using envelope() of spatstat package.
 
 Choa Chu Kang planning area
+
 ```{r}
 G_CK = Gest(childcare_ck_ppp, correction = "border")
 plot(G_CK, xlim=c(0,500))
@@ -252,6 +254,7 @@ plot(G_tm.csr)
 ### 5.11.2 Analysing Spatial Point Process using F Function
 
 Choa Chu Kang planning area
+
 ```{r}
 F_CK = Fest(childcare_ck_ppp)
 plot(F_CK)
@@ -274,11 +277,9 @@ F_tm = Fest(childcare_tm_ppp, correction = "best")
 plot(F_tm)
 ```
 
-
 ```{r}
 F_tm.csr <- envelope(childcare_tm_ppp, Fest, correction = "all", nsim = 999)
 ```
-
 
 ```{r}
 plot(F_tm.csr)
@@ -337,7 +338,6 @@ Performing Complete Spatial Randomness Test
 L_ck.csr <- envelope(childcare_ck_ppp, Lest, nsim = 99, rank = 1, glocal=TRUE)
 ```
 
-
 ```{r}
 plot(L_ck.csr, . - r ~ r, xlab="d", ylab="L(d)-r")
 ```
@@ -352,10 +352,10 @@ plot(L_tm, . -r ~ r,
 ```
 
 Performing Complete Spatial Randomness Test
+
 ```{r}
 L_tm.csr <- envelope(childcare_tm_ppp, Lest, nsim = 99, rank = 1, glocal=TRUE)
 ```
-
 
 ```{r}
 plot(L_tm.csr, . - r ~ r, 
