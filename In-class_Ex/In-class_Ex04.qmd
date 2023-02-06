@@ -95,7 +95,7 @@ tmap_mode('view')
 tm_shape(childcare_sf) +
   tm_dots(alph = 0.5, 
           size = 0.01) +
-  tm_view(set.zoom.limits = c(11,14))
+  tm_view(set.zoom.limits = c(11,14)) ## 11 is zoom out value, 14 zoom in value
 ```
 ## 5.6 Converting the Spatial\* class into generic sp format
 
