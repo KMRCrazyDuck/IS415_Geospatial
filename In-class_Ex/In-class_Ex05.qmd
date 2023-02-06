@@ -1,0 +1,12 @@
+---
+title: "In-class Exercise 5"
+author: "Kwek Ming Rong"
+date: "06 Februrary 2023"
+date-modified: "`r Sys.Date()`"
+format: html
+execute:
+  eval: true
+  echo: true
+  warning: false
+editor: visual
+---

@@ -87,6 +87,16 @@ mpsz <- as_Spatial(mpsz_sf)
 sg <- as_Spatial(sg_sf)
 ```
 
+Plot the childcare centre in Singapore (Visualising the sf layers)
+
+```{r}
+sf_use_s2(FALSE)
+tmap_mode('view')
+tm_shape(childcare_sf) +
+  tm_dots(alph = 0.5, 
+          size = 0.01) +
+  tm_view(set.zoom.limits = c(11,14))
+```
 ## 5.6 Converting the Spatial\* class into generic sp format
 
 spatstat requires the analytical data in ppp object form. There is no direct way to convert a Spatial\* classes into ppp object. We need to convert the Spatial classes\* into Spatial object first.
