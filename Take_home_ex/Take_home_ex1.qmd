@@ -416,3 +416,82 @@ Now, we can re-run density() using the resale data set and plot the output kde m
 kde_nigeria_PPP.bw <- density(nigeria_PPP.km, sigma=bw.diggle, edge=TRUE, kernel="gaussian")
 plot(kde_nigeria_PPP.bw)
 ```
+
+## 5 Extracting study area of Nigeria, Osun
+
+In this section, extraction of study of Nigeria, Osun will be done with the computation of KDE values.
+
+```{r}
+osun = nga_wpspdf[nga_wpspdf@data$ADM1_EN == "Osun",]
+```
+
+Plotting of OSUN state of Nigeria
+
+```{r}
+plot(osun, main = "Osun")
+```
+
+Next, conversion of SpatialPolygonsDataFrame layers into generic spatialpolygons layers
+
+```{r}
+osun_sp = as(osun, "SpatialPolygons")
+```
+
+Creating owin object to convert the above spatialpolygons objects into owin objects that is required by spatstat 
+
+```{r}
+osun_owin = as(osun_sp, "owin")
+```
+
+Combining osun water points
+
+```{r}
+nigeria_osun_PPP = wpdx_ppp[osun_owin]
+```
+
+rescale() function is used to transform the unit of measurement from metre to kilometre
+
+```{r}
+nigeria_osun_PPP.km = rescale(nigeria_osun_PPP, 1000, "km")
+```
+
+Plotting the Osun water point study area
+
+```{r}
+plot(nigeria_osun_PPP.km, main = "Osun")
+```
+
+Visualising the SF layer for Osun
+
+```{r}
+tmap_mode("view")
+tm_shape(osun) +
+  tm_polygons() +
+  tm_dots(size = 0.01,
+          border.col = "black",
+          border.lwd = 0.5)
+```
+
+## 5.1 Computing KDE of Osun State
+
+The code below will be used to compute the KDE of Osun. bw.diggle method is used to derive the bandwidth 
+
+```{r}
+plot(density(nigeria_osun_PPP.km, 
+             sigma=bw.diggle, 
+             edge=TRUE, 
+             kernel="gaussian"),
+     main="Osun")
+```
+
+Computing fixed bandwidth KDE
+
+```{r}
+plot(density(nigeria_osun_PPP.km,
+             sigma=0.25, 
+             edge=TRUE, 
+             kernel="gaussian"),
+     main="Osun")
+```
+
+The advantage of kernel density map over point map is that it spreads the known quantity in color shades of waterpoints for each location in Osun State of Nigeria. Whereas for Kernel point, it only provides the pointer of waterpoints for each location in Osun State and does not state the number unless clicked. 
