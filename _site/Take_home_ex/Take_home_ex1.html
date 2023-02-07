@@ -246,6 +246,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#exploratory-spatial-data-analysis-esda" id="toc-exploratory-spatial-data-analysis-esda" class="nav-link" data-scroll-target="#exploratory-spatial-data-analysis-esda">4 Exploratory Spatial Data Analysis (ESDA)</a></li>
   <li><a href="#import-the-data-saved-in-rds" id="toc-import-the-data-saved-in-rds" class="nav-link" data-scroll-target="#import-the-data-saved-in-rds">4.1 Import the data saved in rds</a></li>
   <li><a href="#visualising-distribution-of-non-functional-water-points" id="toc-visualising-distribution-of-non-functional-water-points" class="nav-link" data-scroll-target="#visualising-distribution-of-non-functional-water-points">4.2 Visualising Distribution of Non-Functional Water Points</a></li>
+  <li><a href="#converting-sf-data-frames-to-sps-spatial-class" id="toc-converting-sf-data-frames-to-sps-spatial-class" class="nav-link" data-scroll-target="#converting-sf-data-frames-to-sps-spatial-class">4.3 Converting sf data frames to sp’s Spatial* class</a></li>
+  <li><a href="#converting-the-spatial-class-into-generic-sp-format" id="toc-converting-the-spatial-class-into-generic-sp-format" class="nav-link" data-scroll-target="#converting-the-spatial-class-into-generic-sp-format">4.4 Converting the Spatial* class into generic sp format</a></li>
+  <li><a href="#converting-the-generic-sp-format-into-spatstats-ppp-format" id="toc-converting-the-generic-sp-format-into-spatstats-ppp-format" class="nav-link" data-scroll-target="#converting-the-generic-sp-format-into-spatstats-ppp-format">4.5 Converting the generic sp format into spatstat’s ppp format</a></li>
+  <li><a href="#creating-owin-object" id="toc-creating-owin-object" class="nav-link" data-scroll-target="#creating-owin-object">4.6 Creating owin object</a></li>
+  <li><a href="#combining-point-events-object-and-owin-object" id="toc-combining-point-events-object-and-owin-object" class="nav-link" data-scroll-target="#combining-point-events-object-and-owin-object">4.7 Combining point events object and owin object</a></li>
+  <li><a href="#first-order-spatial-point-pattern-analysis" id="toc-first-order-spatial-point-pattern-analysis" class="nav-link" data-scroll-target="#first-order-spatial-point-pattern-analysis">4.8 First order Spatial Point Pattern Analysis</a></li>
+  <li><a href="#computing-kernel-density-estimation-using-automatic-bandwidth-selection-method" id="toc-computing-kernel-density-estimation-using-automatic-bandwidth-selection-method" class="nav-link" data-scroll-target="#computing-kernel-density-estimation-using-automatic-bandwidth-selection-method">4.9 Computing kernel density estimation using automatic bandwidth selection method</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -399,62 +406,47 @@ Geodetic CRS:  WGS 84
 #   `#fecal_coliform_value` &lt;dbl&gt;, `#subjective_quality` &lt;chr&gt;, …</code></pre>
 </div>
 </div>
-<p>continue here</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>wpdx_spdf <span class="ot">&lt;-</span> <span class="fu">as_Spatial</span>(wpdx_sf)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>wpdx_spdf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>class       : SpatialPointsDataFrame 
-features    : 97478 
-extent      : 2.707441, 14.21828, 4.301812, 13.86567  (xmin, xmax, ymin, ymax)
-crs         : +proj=longlat +datum=WGS84 +no_defs 
-variables   : 74
-names       : row_id,                                     X.source, X.lat_deg,  X.lon_deg,          X.report_date, X.status_id,    X.water_source_clean, X.water_source_category, X.water_tech_clean, X.water_tech_category, X.facility_type, X.clean_country_name, X.clean_adm1, X.clean_adm2, X.clean_adm3, ... 
-min values  :  29756, Federal Ministry of Water Resources, Nigeria, 4.3018117,   2.707441, 01/01/2010 12:00:00 AM,          No,                Borehole,             Piped Water,          Hand Pump,             Hand Pump,        Improved,              Nigeria,         Abia,    Aba North,           NA, ... 
-max values  : 685455,                                  WaterAid UK, 13.865675, 14.2182849, 12/31/2014 12:00:00 AM,         Yes, Undefined Hand Dug Well,                    Well,           Tapstand,              Tapstand,        Improved,              Nigeria,      Zamfara,         Zuru,           NA, ... </code></pre>
-</div>
-</div>
 <p>Next, we then convert the projection to the appropriate decimal based projection system.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>wpdx_sf <span class="ot">&lt;-</span> wpdx_sf <span class="sc">%&gt;%</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">26391</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>wpdx_sf <span class="ot">&lt;-</span> wpdx_sf <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">26391</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="geospatial-data-cleaning" class="level2">
 <h2 class="anchored" data-anchor-id="geospatial-data-cleaning">2 Geospatial Data Cleaning</h2>
 <p>As the wpdx sf dataframe consist of many redundant field, we use select() to select the fields which we want to retain.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>nigeria26391 <span class="ot">&lt;-</span> nigeria26391 <span class="sc">%&gt;%</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="fu">c</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">8</span><span class="sc">:</span><span class="dv">9</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>nigeria26391 <span class="ot">&lt;-</span> nigeria26391 <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="fu">c</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">8</span><span class="sc">:</span><span class="dv">9</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="checking-for-duplicate-names" class="level2">
 <h2 class="anchored" data-anchor-id="checking-for-duplicate-names">2.1 Checking for duplicate names</h2>
 <p>It is important to check for duplicate name in the data main data fields. Using duplicated(), we can flag out LGA names that might be duplicated as shown below:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="fu">duplicated</span>(nigeria26391<span class="sc">$</span>ADM2_EN) <span class="sc">==</span> <span class="cn">TRUE</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="fu">duplicated</span>(nigeria26391<span class="sc">$</span>ADM2_EN) <span class="sc">==</span> <span class="cn">TRUE</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Bassa"    "Ifelodun" "Irepodun" "Nasarawa" "Obi"      "Surulere"</code></pre>
 </div>
 </div>
 <p>To reduce duplication of LGA names, we will put the state names behind to make it more specific.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="dv">94</span>] <span class="ot">&lt;-</span> <span class="st">"Bassa, Kogi"</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="dv">95</span>] <span class="ot">&lt;-</span> <span class="st">"Bassa, Plateau"</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="dv">304</span>] <span class="ot">&lt;-</span> <span class="st">"Ifelodun, Kwara"</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="dv">305</span>] <span class="ot">&lt;-</span> <span class="st">"Ifelodun, Osun"</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="dv">355</span>] <span class="ot">&lt;-</span> <span class="st">"Irepodun, Kwara"</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="dv">356</span>] <span class="ot">&lt;-</span> <span class="st">"Ireopodun, Osun"</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="dv">519</span>] <span class="ot">&lt;-</span> <span class="st">"Nasarawa, Kano"</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="dv">520</span>] <span class="ot">&lt;-</span> <span class="st">"Nasarawa, Nasarawa"</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="dv">546</span>] <span class="ot">&lt;-</span> <span class="st">"Obi, Benue"</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="dv">547</span>] <span class="ot">&lt;-</span> <span class="st">"Obi, Nasarawa"</span></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="dv">693</span>] <span class="ot">&lt;-</span> <span class="st">"Surulere, Lagos"</span></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="dv">694</span>] <span class="ot">&lt;-</span> <span class="st">"Surulere, Oyo"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="dv">94</span>] <span class="ot">&lt;-</span> <span class="st">"Bassa, Kogi"</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="dv">95</span>] <span class="ot">&lt;-</span> <span class="st">"Bassa, Plateau"</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="dv">304</span>] <span class="ot">&lt;-</span> <span class="st">"Ifelodun, Kwara"</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="dv">305</span>] <span class="ot">&lt;-</span> <span class="st">"Ifelodun, Osun"</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="dv">355</span>] <span class="ot">&lt;-</span> <span class="st">"Irepodun, Kwara"</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="dv">356</span>] <span class="ot">&lt;-</span> <span class="st">"Ireopodun, Osun"</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="dv">519</span>] <span class="ot">&lt;-</span> <span class="st">"Nasarawa, Kano"</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="dv">520</span>] <span class="ot">&lt;-</span> <span class="st">"Nasarawa, Nasarawa"</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="dv">546</span>] <span class="ot">&lt;-</span> <span class="st">"Obi, Benue"</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="dv">547</span>] <span class="ot">&lt;-</span> <span class="st">"Obi, Nasarawa"</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="dv">693</span>] <span class="ot">&lt;-</span> <span class="st">"Surulere, Lagos"</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="dv">694</span>] <span class="ot">&lt;-</span> <span class="st">"Surulere, Oyo"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Checking if the duplication has been resolved.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="fu">duplicated</span>(nigeria26391<span class="sc">$</span>ADM2_EN) <span class="sc">==</span> <span class="cn">TRUE</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>nigeria26391<span class="sc">$</span>ADM2_EN[<span class="fu">duplicated</span>(nigeria26391<span class="sc">$</span>ADM2_EN) <span class="sc">==</span> <span class="cn">TRUE</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>character(0)</code></pre>
 </div>
@@ -464,9 +456,9 @@ max values  : 685455,                                  WaterAid UK, 13.865675, 1
 <h2 class="anchored" data-anchor-id="data-wrangling-for-water-point-data">3 Data wrangling for Water Point Data</h2>
 <p>First, let us have a look at the #status_clean column which stores the information about Functional and Non-Functional data points. The code below returns all values that were used in the column.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">freq</span>(<span class="at">data =</span> wpdx_sf, <span class="at">input =</span> <span class="st">'#status_clean'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">freq</span>(<span class="at">data =</span> wpdx_sf, <span class="at">input =</span> <span class="st">'#status_clean'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Take_home_ex1_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+<p><img src="Take_home_ex1_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                      #status_clean frequency percentage cumulative_perc
@@ -485,52 +477,52 @@ max values  : 685455,                                  WaterAid UK, 13.865675, 1
 <p>As there might be issues performing mathematical calculations with NA labels, we will rename them to unknown.</p>
 <p>The code below renames the column #status_clean to status_clean, select only the status_clean for manipulation and then replace all na values to unknown.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>wpdx_sf_nga <span class="ot">&lt;-</span> wpdx_sf <span class="sc">%&gt;%</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">status_clean =</span> <span class="st">'#status_clean'</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(status_clean) <span class="sc">%&gt;%</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">status_clean =</span> <span class="fu">replace_na</span>(status_clean, <span class="st">"unknown"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>wpdx_sf_nga <span class="ot">&lt;-</span> wpdx_sf <span class="sc">%&gt;%</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">status_clean =</span> <span class="st">'#status_clean'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(status_clean) <span class="sc">%&gt;%</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">status_clean =</span> <span class="fu">replace_na</span>(status_clean, <span class="st">"unknown"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="filtering-data" class="level2">
 <h2 class="anchored" data-anchor-id="filtering-data">3.1 Filtering Data</h2>
 <p>With our previous knowledge, we can filter the data to obtain functional proportion counts in each LGA level. We will filter the wpdx_sf_nga dataframes to option functional and non-functional water points.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>wpdx_func <span class="ot">&lt;-</span> wpdx_sf_nga <span class="sc">%&gt;%</span> </span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(status_clean <span class="sc">%in%</span> </span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>           <span class="fu">c</span>(<span class="st">"Functional"</span>, </span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Functional but not in use"</span>, </span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Functional but needs repair"</span>))</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>wpdx_nonfunc <span class="ot">&lt;-</span> wpdx_sf_nga <span class="sc">%&gt;%</span> </span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(status_clean <span class="sc">%in%</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>          <span class="fu">c</span>(<span class="st">"Abadoned/Decommissioned"</span>, </span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Abandoned"</span>,</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Non-Functional due to dry season"</span>,</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Non-Functional"</span>,</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Non functional due to dry season"</span>))</span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>wpdx_unknown <span class="ot">&lt;-</span> wpdx_sf_nga <span class="sc">%&gt;%</span></span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(status_clean <span class="sc">==</span> <span class="st">"unknown"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>wpdx_func <span class="ot">&lt;-</span> wpdx_sf_nga <span class="sc">%&gt;%</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(status_clean <span class="sc">%in%</span> </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>           <span class="fu">c</span>(<span class="st">"Functional"</span>, </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Functional but not in use"</span>, </span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Functional but needs repair"</span>))</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>wpdx_nonfunc <span class="ot">&lt;-</span> wpdx_sf_nga <span class="sc">%&gt;%</span> </span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(status_clean <span class="sc">%in%</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>          <span class="fu">c</span>(<span class="st">"Abadoned/Decommissioned"</span>, </span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Abandoned"</span>,</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Non-Functional due to dry season"</span>,</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Non-Functional"</span>,</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Non functional due to dry season"</span>))</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>wpdx_unknown <span class="ot">&lt;-</span> wpdx_sf_nga <span class="sc">%&gt;%</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(status_clean <span class="sc">==</span> <span class="st">"unknown"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="point-in-polygon-count" class="level2">
 <h2 class="anchored" data-anchor-id="point-in-polygon-count">3.2 Point in Polygon Count</h2>
 <p>Utilising st_intersects() of sf package and lengths, we check where each data point for the water point which fall inside each LGA. We do each calculation separation so we can cross check later to ensure all the values sum to the same total.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>nigeria_wp <span class="ot">&lt;-</span> nigeria26391 <span class="sc">%&gt;%</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">total_wp</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">lengths</span>(</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_intersects</span>(nigeria26391, wpdx_sf_nga))) <span class="sc">%&gt;%</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">wp_functional</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">lengths</span>(</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_intersects</span>(nigeria26391, wpdx_func))) <span class="sc">%&gt;%</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">wp_nonfunctional</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">lengths</span>(</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_intersects</span>(nigeria26391, wpdx_nonfunc))) <span class="sc">%&gt;%</span></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">wp_unknown</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">lengths</span>(</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_intersects</span>(nigeria26391, wpdx_unknown)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>nigeria_wp <span class="ot">&lt;-</span> nigeria26391 <span class="sc">%&gt;%</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">total_wp</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">lengths</span>(</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_intersects</span>(nigeria26391, wpdx_sf_nga))) <span class="sc">%&gt;%</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">wp_functional</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">lengths</span>(</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_intersects</span>(nigeria26391, wpdx_func))) <span class="sc">%&gt;%</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">wp_nonfunctional</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">lengths</span>(</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_intersects</span>(nigeria26391, wpdx_nonfunc))) <span class="sc">%&gt;%</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">wp_unknown</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">lengths</span>(</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_intersects</span>(nigeria26391, wpdx_unknown)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="saving-the-data-in-rds-format" class="level2">
 <h2 class="anchored" data-anchor-id="saving-the-data-in-rds-format">3.3 Saving the Data in rds format</h2>
 <p>In order to retain the sf data structure for subsequent analysis, we should save the sf dataframe into rds format.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(nigeria_wp, <span class="st">"Data/rds/nigeria_wp.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(nigeria_wp, <span class="st">"Data/rds/nigeria_wp.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="plotting-the-distribution-of-total-water-points-by-lga-in-histogram" class="level2">
@@ -538,22 +530,22 @@ max values  : 685455,                                  WaterAid UK, 13.865675, 1
 <p>Next, we will use mutate() of dplyr package to compute the proportion of Functional and Non- water points.</p>
 <p>This is given by Functional Proportion = Functional Count / Total Count.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> nigeria_wp,</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> total_wp)) <span class="sc">+</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">20</span>,</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">color =</span> <span class="st">"black"</span>,</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">fill =</span> <span class="st">"light blue"</span>) <span class="sc">+</span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    total_wp, <span class="at">na.rm =</span> T)),</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"red"</span>,</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">"dashed"</span>,</span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribution of total water points by LGA"</span>) <span class="sc">+</span></span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"No. of water points"</span>) <span class="sc">+</span></span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"No of</span><span class="sc">\n</span><span class="st">LGAs"</span>) <span class="sc">+</span></span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> nigeria_wp,</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> total_wp)) <span class="sc">+</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">20</span>,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">color =</span> <span class="st">"black"</span>,</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">fill =</span> <span class="st">"light blue"</span>) <span class="sc">+</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    total_wp, <span class="at">na.rm =</span> T)),</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"red"</span>,</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">"dashed"</span>,</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Distribution of total water points by LGA"</span>) <span class="sc">+</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"No. of water points"</span>) <span class="sc">+</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"No of</span><span class="sc">\n</span><span class="st">LGAs"</span>) <span class="sc">+</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Take_home_ex1_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+<p><img src="Take_home_ex1_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -564,64 +556,215 @@ max values  : 685455,                                  WaterAid UK, 13.865675, 1
 <h2 class="anchored" data-anchor-id="import-the-data-saved-in-rds">4.1 Import the data saved in rds</h2>
 <p>We want to import the sf dataframe we have cleaned and prepared earlier</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>NGA_wp <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"Data/rds/nigeria_wp.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>NGA_wp <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"Data/rds/nigeria_wp.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="visualising-distribution-of-non-functional-water-points" class="level2">
 <h2 class="anchored" data-anchor-id="visualising-distribution-of-non-functional-water-points">4.2 Visualising Distribution of Non-Functional Water Points</h2>
 <p>Here, we will plot 2 maps, p1 which shows the functional water points and p2 by total number of water points for side-by-side visualization.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(NGA_wp) <span class="sc">+</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">"wp_functional"</span>,</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">n =</span> <span class="dv">10</span>,</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">style =</span> <span class="st">"equal"</span>,</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> <span class="st">"Blues"</span>) <span class="sc">+</span></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">lwd =</span> <span class="fl">0.1</span>,</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Distribution of functional water points by LGA"</span>,</span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.outside =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(NGA_wp) <span class="sc">+</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">"wp_functional"</span>,</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">n =</span> <span class="dv">10</span>,</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">style =</span> <span class="st">"equal"</span>,</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> <span class="st">"Blues"</span>) <span class="sc">+</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">lwd =</span> <span class="fl">0.1</span>,</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Distribution of functional water points by LGA"</span>,</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.outside =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(NGA_wp) <span class="sc">+</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">"total_wp"</span>,</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">n =</span> <span class="dv">10</span>,</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">style =</span> <span class="st">"equal"</span>,</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> <span class="st">"Blues"</span>) <span class="sc">+</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">lwd =</span> <span class="fl">0.1</span>,</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Distribution of total water points by LGA"</span>,</span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.outside =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(NGA_wp) <span class="sc">+</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">"total_wp"</span>,</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">n =</span> <span class="dv">10</span>,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">style =</span> <span class="st">"equal"</span>,</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> <span class="st">"Blues"</span>) <span class="sc">+</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">lwd =</span> <span class="fl">0.1</span>,</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Distribution of total water points by LGA"</span>,</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.outside =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Using the tmap_arrange() function, we can arrange the two maps plotted on a single row for side-by-side comparison.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_arrange</span>(p2, p1, <span class="at">nrow =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_arrange</span>(p2, p1, <span class="at">nrow =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Take_home_ex1_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+<p><img src="Take_home_ex1_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="converting-sf-data-frames-to-sps-spatial-class" class="level2">
+<h2 class="anchored" data-anchor-id="converting-sf-data-frames-to-sps-spatial-class">4.3 Converting sf data frames to sp’s Spatial* class</h2>
+<p>Although simple feature data frame is gaining popularity again sp’s Spatial* classes, there are, however, many geospatial analysis packages require the input geospatial data in sp’s Spatial* classes</p>
+<p>The code chunk below uses as_Spatial() of sf package to convert the geospatial data from simple feature data frame to sp’s Spatial* class.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>wpdx_spdf <span class="ot">&lt;-</span> <span class="fu">as_Spatial</span>(wpdx_sf)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>nga_wpspdf <span class="ot">&lt;-</span> <span class="fu">as_Spatial</span>(NGA_wp) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>wpdx_spdf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class       : SpatialPointsDataFrame 
+features    : 97478 
+extent      : 32536.82, 1292096, 33461.24, 1091052  (xmin, xmax, ymin, ymax)
+crs         : +proj=tmerc +lat_0=4 +lon_0=4.5 +k=0.99975 +x_0=230738.26 +y_0=0 +a=6378249.145 +rf=293.465 +towgs84=-92,-93,122,0,0,0,0 +units=m +no_defs 
+variables   : 74
+names       : row_id,                                     X.source, X.lat_deg,  X.lon_deg,          X.report_date, X.status_id,    X.water_source_clean, X.water_source_category, X.water_tech_clean, X.water_tech_category, X.facility_type, X.clean_country_name, X.clean_adm1, X.clean_adm2, X.clean_adm3, ... 
+min values  :  29756, Federal Ministry of Water Resources, Nigeria, 4.3018117,   2.707441, 01/01/2010 12:00:00 AM,          No,                Borehole,             Piped Water,          Hand Pump,             Hand Pump,        Improved,              Nigeria,         Abia,    Aba North,           NA, ... 
+max values  : 685455,                                  WaterAid UK, 13.865675, 14.2182849, 12/31/2014 12:00:00 AM,         Yes, Undefined Hand Dug Well,                    Well,           Tapstand,              Tapstand,        Improved,              Nigeria,      Zamfara,         Zuru,           NA, ... </code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>wpdx</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>nga_wpspdf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 97,478 × 75
-   row_id `#source`      #lat_…¹ #lon_…² #repo…³ #stat…⁴ #wate…⁵ #wate…⁶ #wate…⁷
-    &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  
- 1 158721 Federal Minis…    5.07    6.62 02/19/… Yes     Boreho… Well    Mechan…
- 2 158892 Federal Minis…    5.09    7.09 02/06/… Yes     Boreho… Well    Hand P…
- 3 323117 Federal Minis…    5.91    8.77 08/31/… Yes     Boreho… Well    Hand P…
- 4 300176 Federal Minis…    5.23    7.32 05/17/… Yes     Boreho… Well    Mechan…
- 5 324346 Federal Minis…    6.88    3.36 08/17/… Yes     Boreho… Well    Mechan…
- 6 297273 Federal Minis…    6.59    3.29 05/26/… Yes     Boreho… Well    Mechan…
- 7 296853 Federal Minis…    6.60    3.26 06/02/… Yes     Boreho… Well    Mechan…
- 8 323866 Federal Minis…    6.20    6.73 09/18/… Yes     Boreho… Well    Mechan…
- 9 297044 Federal Minis…    6.61    3.30 05/26/… Yes     Boreho… Well    Mechan…
-10 324321 Federal Minis…    6.96    3.60 08/16/… Yes     Boreho… Well    Mechan…
-# … with 97,468 more rows, 66 more variables: `#water_tech_category` &lt;chr&gt;,
-#   `#facility_type` &lt;chr&gt;, `#clean_country_name` &lt;chr&gt;, `#clean_adm1` &lt;chr&gt;,
-#   `#clean_adm2` &lt;chr&gt;, `#clean_adm3` &lt;chr&gt;, `#clean_adm4` &lt;chr&gt;,
-#   `#install_year` &lt;dbl&gt;, `#installer` &lt;chr&gt;, `#rehab_year` &lt;lgl&gt;,
-#   `#rehabilitator` &lt;lgl&gt;, `#management_clean` &lt;chr&gt;, `#status_clean` &lt;chr&gt;,
-#   `#pay` &lt;chr&gt;, `#fecal_coliform_presence` &lt;chr&gt;,
-#   `#fecal_coliform_value` &lt;dbl&gt;, `#subjective_quality` &lt;chr&gt;, …</code></pre>
+<pre><code>class       : SpatialPolygonsDataFrame 
+features    : 774 
+extent      : 28879.72, 1343798, 30292.37, 1094244  (xmin, xmax, ymin, ymax)
+crs         : +proj=tmerc +lat_0=4 +lon_0=4.5 +k=0.99975 +x_0=230738.26 +y_0=0 +a=6378249.145 +rf=293.465 +towgs84=-92,-93,122,0,0,0,0 +units=m +no_defs 
+variables   : 8
+names       :   ADM2_EN, ADM2_PCODE, ADM1_EN, ADM1_PCODE, total_wp, wp_functional, wp_nonfunctional, wp_unknown 
+min values  : Aba North,   NG001001,    Abia,      NG001,        0,             0,                0,          0 
+max values  :      Zuru,   NG037014, Zamfara,      NG037,      907,           677,              252,        219 </code></pre>
+</div>
+</div>
+</section>
+<section id="converting-the-spatial-class-into-generic-sp-format" class="level2">
+<h2 class="anchored" data-anchor-id="converting-the-spatial-class-into-generic-sp-format">4.4 Converting the Spatial* class into generic sp format</h2>
+<p>Spatstat requires the analytical data in ppp object form. There is no direct way to convert a Spatial* classes into ppp object. We need to convert the Spatial classes* into Spatial object first.</p>
+<p>The codes chunk below converts the Spatial* classes into generic sp objects.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>wpdx_sp <span class="ot">&lt;-</span> <span class="fu">as</span>(wpdx_spdf, <span class="st">"SpatialPoints"</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>nga_wp_sp <span class="ot">&lt;-</span> <span class="fu">as</span>(nga_wpspdf, <span class="st">"SpatialPolygons"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>wpdx_sp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class       : SpatialPoints 
+features    : 97478 
+extent      : 32536.82, 1292096, 33461.24, 1091052  (xmin, xmax, ymin, ymax)
+crs         : +proj=tmerc +lat_0=4 +lon_0=4.5 +k=0.99975 +x_0=230738.26 +y_0=0 +a=6378249.145 +rf=293.465 +towgs84=-92,-93,122,0,0,0,0 +units=m +no_defs </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>nga_wp_sp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class       : SpatialPolygons 
+features    : 774 
+extent      : 28879.72, 1343798, 30292.37, 1094244  (xmin, xmax, ymin, ymax)
+crs         : +proj=tmerc +lat_0=4 +lon_0=4.5 +k=0.99975 +x_0=230738.26 +y_0=0 +a=6378249.145 +rf=293.465 +towgs84=-92,-93,122,0,0,0,0 +units=m +no_defs </code></pre>
+</div>
+</div>
+</section>
+<section id="converting-the-generic-sp-format-into-spatstats-ppp-format" class="level2">
+<h2 class="anchored" data-anchor-id="converting-the-generic-sp-format-into-spatstats-ppp-format">4.5 Converting the generic sp format into spatstat’s ppp format</h2>
+<p>Now, we will use as.ppp() function of spatstat to convert the spatial data into spatstat’s ppp object format.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>wpdx_ppp <span class="ot">&lt;-</span> <span class="fu">as</span>(wpdx_sp, <span class="st">"ppp"</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>wpdx_ppp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Planar point pattern: 97478 points
+window: rectangle = [32536.8, 1292096.3] x [33461.2, 1091051.6] units</code></pre>
+</div>
+</div>
+<p>To check the summary</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(wpdx_ppp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Planar point pattern:  97478 points
+Average intensity 7.31763e-08 points per square unit
+
+Coordinates are given to 2 decimal places
+i.e. rounded to the nearest multiple of 0.01 units
+
+Window: rectangle = [32536.8, 1292096.3] x [33461.2, 1091051.6] units
+                    (1260000 x 1058000 units)
+Window area = 1.3321e+12 square units</code></pre>
+</div>
+</div>
+<p>If newly created ppp object contain duplicate points</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">any</span>(<span class="fu">duplicated</span>(wpdx_ppp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+</div>
+</section>
+<section id="creating-owin-object" class="level2">
+<h2 class="anchored" data-anchor-id="creating-owin-object">4.6 Creating owin object</h2>
+<p>When analysing spatial point patterns, it is a good practice to confine the analysis with a geographical area like Nigeria boundary. In spatstat, an object called owin is specially designed to represent this polygonal region.</p>
+<p>The code chunk below is used to covert nga_wp_sp SpatialPolygon object into owin object of spatstat.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>ng_owin <span class="ot">&lt;-</span> <span class="fu">as</span>(nga_wp_sp, <span class="st">"owin"</span>)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ng_owin)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Take_home_ex1_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="combining-point-events-object-and-owin-object" class="level2">
+<h2 class="anchored" data-anchor-id="combining-point-events-object-and-owin-object">4.7 Combining point events object and owin object</h2>
+<p>In this last step of geospatial data wrangling, we will extract water points events that are located within Nigeria by using the code chunk below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>nigeria_PPP <span class="ot">=</span> wpdx_ppp[ng_owin]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(nigeria_PPP)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Take_home_ex1_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="first-order-spatial-point-pattern-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="first-order-spatial-point-pattern-analysis">4.8 First order Spatial Point Pattern Analysis</h2>
+<p>In this section, you will learn how to perform first-order SPPA by using <strong>spatstat</strong> package. The hands-on exercise will focus on:</p>
+<ul>
+<li><p>deriving <strong>kernel density estimation (KDE)</strong> layer for visualising and exploring the intensity of point processes,</p></li>
+<li><p>performing <strong>Confirmatory Spatial Point Patterns Analysis</strong> by using <strong>Nearest Neighbour</strong> statistics.</p></li>
+</ul>
+</section>
+<section id="computing-kernel-density-estimation-using-automatic-bandwidth-selection-method" class="level2">
+<h2 class="anchored" data-anchor-id="computing-kernel-density-estimation-using-automatic-bandwidth-selection-method">4.9 Computing kernel density estimation using automatic bandwidth selection method</h2>
+<p>The code chunk below computes a kernel density by using the following configurations of <a href="https://rdrr.io/cran/spatstat/man/density.ppp.html"><em>density()</em></a> of <strong>spatstat</strong>:</p>
+<ul>
+<li><p><a href="https://rdrr.io/cran/spatstat/man/bw.diggle.html"><em>bw.diggle()</em></a> automatic bandwidth selection method.<br>
+</p></li>
+<li><p>The smoothing kernel used is <em>gaussian</em>, which is the default.<br>
+</p></li>
+<li><p>The intensity estimate is corrected for edge effect bias by using method described by Jones (1993) and Diggle (2010, equation 18.9). The default is <em>FALSE</em>.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>kde_nigeria_bw <span class="ot">&lt;-</span> <span class="fu">density</span>(nigeria_PPP,</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>                              <span class="at">sigma=</span>bw.diggle,</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">edge=</span><span class="cn">TRUE</span>,</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">kernel=</span><span class="st">"gaussian"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Plot() function of Base R is used to display kernel density derived.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(kde_nigeria_bw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Take_home_ex1_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The density values of the output range is way too small to comprehend. This is because the default unit of measurement of svy21 is in meter. As a result, the density values computed is in “number of points per square meter”.</p>
+<p>Before we move on to next section, it is good to know that you can retrieve the bandwidth used to compute the kde layer by using the code chunk below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>bw <span class="ot">&lt;-</span> <span class="fu">bw.diggle</span>(nigeria_PPP)</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>bw</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   sigma 
+213.9791 </code></pre>
+</div>
+</div>
+<p>Rescalling KDE values</p>
+<p>In the code chunk below, rescale() is used to covert the unit of measurement from meter to kilometer.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>nigeria_PPP.km <span class="ot">&lt;-</span> <span class="fu">rescale</span>(nigeria_PPP, <span class="dv">1000</span>, <span class="st">"km"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, we can re-run density() using the resale data set and plot the output kde map.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>kde_nigeria_PPP.bw <span class="ot">&lt;-</span> <span class="fu">density</span>(nigeria_PPP.km, <span class="at">sigma=</span>bw.diggle, <span class="at">edge=</span><span class="cn">TRUE</span>, <span class="at">kernel=</span><span class="st">"gaussian"</span>)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(kde_nigeria_PPP.bw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Take_home_ex1_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 

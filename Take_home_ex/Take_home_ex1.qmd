@@ -73,7 +73,7 @@ gbnigeria = st_read(dsn = "Data/Geospatial", layer = "nga_admbnda_adm2_osgof_201
 
 ## 1.3 Importing the aspatial data
 
-Since WPdx+ data set is in csv format, we will use read_csv() of readr package to import Water_Point_Data_Exchange_-_PlusWPdx.csv and output it to an R object called wpdx.
+Since WPdx+ data set is in csv format, we will use read_csv() of readr package to import Water_Point_Data_Exchange\_-\_PlusWPdx.csv and output it to an R object called wpdx.
 
 ```{r}
 wpdx <- read_csv("Data/Aspatial/Water_Point_Data_Exchange_-_Plus__WPdx__.csv") %>% filter(`#clean_country_name` == "Nigeria")
@@ -101,11 +101,7 @@ As there is no spatial data information, firstly, we assign the original project
 wpdx_sf <- st_sf(wpdx, crs=4326)
 wpdx_sf
 ```
-continue here
-```{r}
-wpdx_spdf <- as_Spatial(wpdx_sf)
-wpdx_spdf
-```
+
 Next, we then convert the projection to the appropriate decimal based projection system.
 
 ```{r}
@@ -122,7 +118,7 @@ nigeria26391 <- nigeria26391 %>%
   dplyr::select(c(3:4, 8:9))
 ```
 
-## 2.1 Checking for duplicate names 
+## 2.1 Checking for duplicate names
 
 It is important to check for duplicate name in the data main data fields. Using duplicated(), we can flag out LGA names that might be duplicated as shown below:
 
@@ -148,6 +144,7 @@ nigeria26391$ADM2_EN[694] <- "Surulere, Oyo"
 ```
 
 Checking if the duplication has been resolved.
+
 ```{r}
 nigeria26391$ADM2_EN[duplicated(nigeria26391$ADM2_EN) == TRUE]
 ```
@@ -283,7 +280,139 @@ Using the tmap_arrange() function, we can arrange the two maps plotted on a sing
 tmap_arrange(p2, p1, nrow = 1)
 ```
 
+## 4.3 Converting sf data frames to sp's Spatial\* class
+
+Although simple feature data frame is gaining popularity again sp's Spatial\* classes, there are, however, many geospatial analysis packages require the input geospatial data in sp's Spatial\* classes
+
+The code chunk below uses as_Spatial() of sf package to convert the geospatial data from simple feature data frame to sp's Spatial\* class.
+
 ```{r}
-wpdx
+wpdx_spdf <- as_Spatial(wpdx_sf)
+nga_wpspdf <- as_Spatial(NGA_wp) 
 ```
 
+```{r}
+wpdx_spdf
+```
+
+```{r}
+nga_wpspdf
+```
+
+## 4.4 Converting the Spatial\* class into generic sp format
+
+Spatstat requires the analytical data in ppp object form. There is no direct way to convert a Spatial\* classes into ppp object. We need to convert the Spatial classes\* into Spatial object first.
+
+The codes chunk below converts the Spatial\* classes into generic sp objects.
+
+```{r}
+wpdx_sp <- as(wpdx_spdf, "SpatialPoints")
+nga_wp_sp <- as(nga_wpspdf, "SpatialPolygons")
+```
+
+```{r}
+wpdx_sp
+```
+
+```{r}
+nga_wp_sp
+```
+
+## 4.5 Converting the generic sp format into spatstat's ppp format
+
+Now, we will use as.ppp() function of spatstat to convert the spatial data into spatstat's ppp object format.
+
+```{r}
+wpdx_ppp <- as(wpdx_sp, "ppp")
+wpdx_ppp
+```
+
+To check the summary
+
+```{r}
+summary(wpdx_ppp)
+```
+
+If newly created ppp object contain duplicate points
+
+```{r}
+any(duplicated(wpdx_ppp))
+```
+
+## 4.6 Creating owin object
+
+When analysing spatial point patterns, it is a good practice to confine the analysis with a geographical area like Nigeria boundary. In spatstat, an object called owin is specially designed to represent this polygonal region.
+
+The code chunk below is used to covert nga_wp_sp SpatialPolygon object into owin object of spatstat.
+
+```{r}
+ng_owin <- as(nga_wp_sp, "owin")
+plot(ng_owin)
+```
+
+## 4.7 Combining point events object and owin object
+
+In this last step of geospatial data wrangling, we will extract water points events that are located within Nigeria by using the code chunk below.
+
+```{r}
+nigeria_PPP = wpdx_ppp[ng_owin]
+```
+
+```{r}
+plot(nigeria_PPP)
+```
+
+## 4.8 First order Spatial Point Pattern Analysis
+
+In this section, you will learn how to perform first-order SPPA by using **spatstat** package. The hands-on exercise will focus on:
+
+-   deriving **kernel density estimation (KDE)** layer for visualising and exploring the intensity of point processes,
+
+-   performing **Confirmatory Spatial Point Patterns Analysis** by using **Nearest Neighbour** statistics.
+
+## 4.9 Computing kernel density estimation using automatic bandwidth selection method
+
+The code chunk below computes a kernel density by using the following configurations of [*density()*](https://rdrr.io/cran/spatstat/man/density.ppp.html) of **spatstat**:
+
+-   [*bw.diggle()*](https://rdrr.io/cran/spatstat/man/bw.diggle.html) automatic bandwidth selection method. \
+
+-   The smoothing kernel used is *gaussian*, which is the default. \
+
+-   The intensity estimate is corrected for edge effect bias by using method described by Jones (1993) and Diggle (2010, equation 18.9). The default is *FALSE*.
+
+```{r}
+kde_nigeria_bw <- density(nigeria_PPP,
+                              sigma=bw.diggle,
+                              edge=TRUE,
+                            kernel="gaussian") 
+```
+
+Plot() function of Base R is used to display kernel density derived.
+
+```{r}
+plot(kde_nigeria_bw)
+```
+
+The density values of the output range is way too small to comprehend. This is because the default unit of measurement of svy21 is in meter. As a result, the density values computed is in “number of points per square meter”.
+
+Before we move on to next section, it is good to know that you can retrieve the bandwidth used to compute the kde layer by using the code chunk below.
+
+```{r}
+bw <- bw.diggle(nigeria_PPP)
+bw
+```
+
+Rescalling KDE values
+
+In the code chunk below, rescale() is used to covert the unit of measurement from meter to kilometer.
+
+```{r}
+nigeria_PPP.km <- rescale(nigeria_PPP, 1000, "km")
+```
+
+Now, we can re-run density() using the resale data set and plot the output kde map. The use of sigma = bw.diggle is used to detect a single tight cluster which would be the osun state to be extracted later
+
+```{r}
+kde_nigeria_PPP.bw <- density(nigeria_PPP.km, sigma=bw.diggle, edge=TRUE, kernel="gaussian")
+plot(kde_nigeria_PPP.bw)
+```
