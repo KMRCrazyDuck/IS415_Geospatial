@@ -45,6 +45,8 @@ In this take home exercise 1, six R packages will be used, they are:
 
 -   [**spatstat**](https://spatstat.org/), which has a wide range of useful functions for point pattern analysis. In this hands-on exercise, it will be used to perform 1st- and 2nd-order spatial point patterns analysis and derive kernel density estimation (KDE) layer.
 
+-   [**tidyverse**](https://rviews.rstudio.com/2017/06/08/what-is-the-tidyverse/), tidyverse is an opinionated collection of R packages designed for data science. It is also coherent system of packages for data manipulation, exploration and visualization.
+
 -   [**raster**](https://cran.r-project.org/web/packages/raster/) which reads, writes, manipulates, analyses and model of gridded spatial data (i.e. raster). In this hands-on exercise, it will be used to convert image output generate by spatstat into raster format.
 
 -   [**maptools**](https://cran.r-project.org/web/packages/maptools/) which provides a set of tools for manipulating geographic data. In this hands-on exercise, we mainly use it to convert *Spatial* objects into *ppp* format of **spatstat**.
@@ -472,6 +474,38 @@ tm_shape(osun) +
           border.lwd = 0.5)
 ```
 
+
+```{r}
+osun1 <- tm_shape(osun) +
+  tm_fill("wp_functional",
+          n = 10,
+          style = "equal",
+          palette = "Blues") +
+  tm_borders(lwd = 0.1,
+             alpha = 1) +
+  tm_layout(main.title = "Distribution of functional water points by LGA",
+            legend.outside = FALSE)
+```
+
+```{r}
+osun2 <- tm_shape(osun) +
+  tm_fill("wp_nonfunctional",
+          n = 10,
+          style = "equal",
+          palette = "Blues") +
+  tm_borders(lwd = 0.1,
+             alpha = 1) +
+  tm_layout(main.title = "Distribution of total water points by LGA",
+            legend.outside = FALSE)
+```
+
+Osun State Functional and Non Functional Water Points
+
+```{r}
+tmap_arrange(osun2, osun1, nrow = 1)
+```
+
+
 ## 5.1 Computing KDE of Osun State
 
 The code below will be used to compute the KDE of Osun. bw.diggle method is used to derive the bandwidth 
@@ -495,3 +529,61 @@ plot(density(nigeria_osun_PPP.km,
 ```
 
 The advantage of kernel density map over point map is that it spreads the known quantity in color shades of waterpoints for each location in Osun State of Nigeria. Whereas for Kernel point, it only provides the pointer of waterpoints for each location in Osun State and does not state the number unless clicked. 
+
+## 6 Second Spatial Point Analysis 
+
+## 6.1 Performing Clarks Evans Test of Osun State
+
+In this section, we will perform the Clark-Evans test of aggregation for a spatial point pattern by using clarkevans.test() of statspat.
+
+The test hypotheses are:
+
+Ho = The distribution of waterpoints are randomly distributed.
+
+H1= The distribution of waterpoints are not randomly distributed.
+
+The 95% confidence interval will be used.
+
+```{r}
+clarkevans.test(nigeria_osun_PPP,
+                correction="none",
+                clipregion=NULL,
+                alternative=c("two.sided"),
+                nsim=999)
+```
+
+Given the p value of 0.002 which is lesser than 0.05 of 95% confidence interval, H0 is rejected and we can conclude that the distribution of waterpoints are not randomly distributed
+
+## 6.2 Analysing Second Spatial Point using L function
+
+In this section, second spatial point L-function will be using Lest() of spatstat package. Monta carlo simulation test will be used using envelope() of spatstat package.
+
+## 6.2.1 Computing L Function Estimation
+
+```{r}
+L_ck = Lest(nigeria_osun_PPP, correction = "Ripley")
+plot(L_ck, . -r ~ r, 
+     ylab= "L(d)-r", xlab = "d(m)")
+```
+
+## 6.2.2 Performing Complete Spatial Random Test
+
+To confirm the observed spatial patterns above, a hypothesis test will be conducted. The hypothesis and test are as follows:
+
+Ho = The distribution of Water Point at Osun State are randomly distributed.
+
+H1= The distribution of Water Point at Osun State are not randomly distributed.
+
+The null hypothesis will be rejected if p-value if smaller than alpha value of 0.001.
+
+The code chunk below is used to perform the hypothesis testing
+
+```{r}
+L_ck.csr <- envelope(nigeria_osun_PPP, Lest, nsim = 39, rank = 1, glocal=TRUE)
+```
+
+```{r}y
+plot(L_ck.csr, . - r ~ r, xlab="d", ylab="L(d)-r")
+```
+
+Given the p value of 0.002 which is lesser than 0.05 of 95% confidence interval, H0 is rejected and we can conclude that the distribution of waterpoints are not randomly distributed
