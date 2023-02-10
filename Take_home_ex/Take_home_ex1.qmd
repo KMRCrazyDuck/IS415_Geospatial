@@ -581,7 +581,7 @@ The code chunk below is used to perform the hypothesis testing
 ```{r}
 L_ck.csr <- envelope(nigeria_osun_PPP, Lest, nsim = 39, rank = 1, glocal=TRUE)
 ```
-
+## start
 ```{r}y
 plot(L_ck.csr, . - r ~ r, xlab="d", ylab="L(d)-r")
 ```
