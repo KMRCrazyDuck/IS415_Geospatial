@@ -559,10 +559,12 @@ In this section, second spatial point L-function will be using Lest() of spatsta
 ## 6.2.1 Computing L Function Estimation
 
 ```{r}
-L_ck = Lest(nigeria_osun_PPP, correction = "Ripley")
-plot(L_ck, . -r ~ r, 
-     ylab= "L(d)-r", xlab = "d(m)")
+#L_ck = Lest(nigeria_osun_PPP, correction = "Ripley")
+#plot(L_ck, . -r ~ r, 
+#     ylab= "L(d)-r", xlab = "d(m)")
 ```
+
+![](/_site/Take_home_ex/Take_home_ex1_files/figure-html/photo1676079599%20(1).jpeg)
 
 ## 6.2.2 Performing Complete Spatial Random Test
 
@@ -577,11 +579,13 @@ The null hypothesis will be rejected if p-value if smaller than alpha value of 0
 The code chunk below is used to perform the hypothesis testing
 
 ```{r}
-L_ck.csr <- envelope(nigeria_osun_PPP, Lest, nsim = 39, rank = 1, glocal=TRUE)
+#L_ck.csr <- envelope(nigeria_osun_PPP, Lest, nsim = 39, rank = 1, glocal=TRUE)
 ```
 
 ```{r}
-plot(L_ck.csr, . - r ~ r, xlab="d", ylab="L(d)-r")
+#plot(L_ck.csr, . - r ~ r, xlab="d", ylab="L(d)-r")
 ```
 
-Given the p value of 0.002 which is lesser than 0.05 of 95% confidence interval, H0 is rejected and we can conclude that the distribution of waterpoints are not randomly distributed
+![](/_site/Take_home_ex/Take_home_ex1_files/figure-html/photo1676079599.jpeg)
+
+From the chart, given the L_ck.csr plotted graph exited the envelope this shows that it is lesser than 0.05 of 95% confidence interval, H0 is rejected and we can conclude that the distribution of waterpoints are not randomly distributed
