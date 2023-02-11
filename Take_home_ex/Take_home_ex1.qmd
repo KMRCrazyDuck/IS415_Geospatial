@@ -376,9 +376,9 @@ In this section, you will learn how to perform first-order SPPA by using **spats
 
 The code chunk below computes a kernel density by using the following configurations of [*density()*](https://rdrr.io/cran/spatstat/man/density.ppp.html) of **spatstat**:
 
--   [*bw.diggle()*](https://rdrr.io/cran/spatstat/man/bw.diggle.html) automatic bandwidth selection method. \
+-   [*bw.diggle()*](https://rdrr.io/cran/spatstat/man/bw.diggle.html) automatic bandwidth selection method.\
 
--   The smoothing kernel used is *gaussian*, which is the default. \
+-   The smoothing kernel used is *gaussian*, which is the default.\
 
 -   The intensity estimate is corrected for edge effect bias by using method described by Jones (1993) and Diggle (2010, equation 18.9). The default is *FALSE*.
 
@@ -395,7 +395,7 @@ Plot() function of Base R is used to display kernel density derived.
 plot(kde_nigeria_bw)
 ```
 
-The density values of the output range is way too small to comprehend. This is because the default unit of measurement of svy21 is in meter. As a result, the density values computed is in “number of points per square meter”.
+The density values of the output range is way too small to comprehend. This is because the default unit of measurement of svy21 is in meter. As a result, the density values computed is in "number of points per square meter".
 
 Before we move on to next section, it is good to know that you can retrieve the bandwidth used to compute the kde layer by using the code chunk below.
 
@@ -439,7 +439,7 @@ Next, conversion of SpatialPolygonsDataFrame layers into generic spatialpolygons
 osun_sp = as(osun, "SpatialPolygons")
 ```
 
-Creating owin object to convert the above spatialpolygons objects into owin objects that is required by spatstat 
+Creating owin object to convert the above spatialpolygons objects into owin objects that is required by spatstat
 
 ```{r}
 osun_owin = as(osun_sp, "owin")
@@ -474,7 +474,6 @@ tm_shape(osun) +
           border.lwd = 0.5)
 ```
 
-
 ```{r}
 osun1 <- tm_shape(osun) +
   tm_fill("wp_functional",
@@ -505,10 +504,9 @@ Osun State Functional and Non Functional Water Points
 tmap_arrange(osun2, osun1, nrow = 1)
 ```
 
-
 ## 5.1 Computing KDE of Osun State
 
-The code below will be used to compute the KDE of Osun. bw.diggle method is used to derive the bandwidth 
+The code below will be used to compute the KDE of Osun. bw.diggle method is used to derive the bandwidth
 
 ```{r}
 plot(density(nigeria_osun_PPP.km, 
@@ -528,9 +526,9 @@ plot(density(nigeria_osun_PPP.km,
      main="Osun")
 ```
 
-The advantage of kernel density map over point map is that it spreads the known quantity in color shades of waterpoints for each location in Osun State of Nigeria. Whereas for Kernel point, it only provides the pointer of waterpoints for each location in Osun State and does not state the number unless clicked. 
+The advantage of kernel density map over point map is that it spreads the known quantity in color shades of waterpoints for each location in Osun State of Nigeria. Whereas for Kernel point, it only provides the pointer of waterpoints for each location in Osun State and does not state the number unless clicked.
 
-## 6 Second Spatial Point Analysis 
+## 6 Second Spatial Point Analysis
 
 ## 6.1 Performing Clarks Evans Test of Osun State
 
@@ -561,10 +559,12 @@ In this section, second spatial point L-function will be using Lest() of spatsta
 ## 6.2.1 Computing L Function Estimation
 
 ```{r}
-L_ck = Lest(nigeria_osun_PPP, correction = "Ripley")
-plot(L_ck, . -r ~ r, 
-     ylab= "L(d)-r", xlab = "d(m)")
+#L_ck = Lest(nigeria_osun_PPP, correction = "Ripley")
+#plot(L_ck, . -r ~ r, 
+#     ylab= "L(d)-r", xlab = "d(m)")
 ```
+
+![](/_site/Take_home_ex/Take_home_ex1_files/figure-html/unnamed-chunk-53-1.png)
 
 ## 6.2.2 Performing Complete Spatial Random Test
 
@@ -579,11 +579,76 @@ The null hypothesis will be rejected if p-value if smaller than alpha value of 0
 The code chunk below is used to perform the hypothesis testing
 
 ```{r}
-L_ck.csr <- envelope(nigeria_osun_PPP, Lest, nsim = 39, rank = 1, glocal=TRUE)
+#L_ck.csr <- envelope(nigeria_osun_PPP, Lest, nsim = 39, rank = 1, glocal=TRUE)
 ```
 
-```{r}y
-plot(L_ck.csr, . - r ~ r, xlab="d", ylab="L(d)-r")
+```{r}
+#plot(L_ck.csr, . - r ~ r, xlab="d", ylab="L(d)-r")
 ```
 
-Given the p value of 0.002 which is lesser than 0.05 of 95% confidence interval, H0 is rejected and we can conclude that the distribution of waterpoints are not randomly distributed
+![](/_site/Take_home_ex/Take_home_ex1_files/figure-html/unnamed-chunk-55-1.png)
+
+From the chart, given the L_ck.csr plotted graph exited the envelope this shows that it is lesser than 0.05 of 95% confidence interval, H0 is rejected and we can conclude that the distribution of waterpoints are not randomly distributed
+
+## 7 Local Colocation Quotients (LCLQ)
+
+## 7.1 Visualising the SF Layer
+
+```{r}
+tmap_mode("view")
+tm_shape(osun) +
+  tm_polygons() +
+  tm_shape(wpdx_sf_nga) +
+  tm_dots(col = "status_clean", 
+          size = 0.01,
+          border.col = "black",
+          border.lwd = 0.5) +
+  tm_view(set.zoom.limits = c(12, 16))
+```
+
+## 7.2 Applying Local Colocation Quotients
+
+```{r}
+nb <- include_self(
+  st_knn(st_geometry(wpdx_sf_nga), 6))
+```
+
+```{r}
+wt <- st_kernel_weights(nb,
+                        wpdx_sf_nga, 
+                        "gaussian",
+                        adaptive = TRUE)
+```
+
+```{r}
+Functional <- wpdx_sf_nga %>%
+  filter(status_clean == "Functional")
+A <- Functional$status_clean
+```
+
+```{r}
+NonFunctional <- wpdx_sf_nga %>%
+  filter(status_clean == "Non-Functional")
+B <- NonFunctional$status_clean
+
+```
+
+```{r}
+LCLQ <- local_colocation(A, B, nb, wt , 30)
+```
+
+```{r}
+LCLQ_sf_nga <- cbind(wpdx_sf_nga, LCLQ)
+```
+
+```{r}
+tmap_mode("view")
+tm_shape(osun) +
+  tm_polygons() +
+  tm_shape(LCLQ_sf_nga) +
+  tm_dots(col = "status_clean", 
+          size = 0.01,
+          border.col = "black",
+          border.lwd = 0.5) +
+  tm_view(set.zoom.limits = c(12, 16))
+```
