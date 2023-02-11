@@ -564,7 +564,7 @@ In this section, second spatial point L-function will be using Lest() of spatsta
 #     ylab= "L(d)-r", xlab = "d(m)")
 ```
 
-![](/_site/Take_home_ex/Take_home_ex1_files/figure-html/unnamed-chunk-53-1.png)
+![](/_site/Take_home_ex/Images/photo_6287042771235746545_y.jpg)
 
 ## 6.2.2 Performing Complete Spatial Random Test
 
@@ -586,69 +586,75 @@ The code chunk below is used to perform the hypothesis testing
 #plot(L_ck.csr, . - r ~ r, xlab="d", ylab="L(d)-r")
 ```
 
-![](/_site/Take_home_ex/Take_home_ex1_files/figure-html/unnamed-chunk-55-1.png)
-
-From the chart, given the L_ck.csr plotted graph exited the envelope this shows that it is lesser than 0.05 of 95% confidence interval, H0 is rejected and we can conclude that the distribution of waterpoints are not randomly distributed
+![](/_site/Take_home_ex/Images/photo_6287042771235746544_y.jpg)From the chart, given the L_ck.csr plotted graph exited the envelope this shows that it is lesser than 0.05 of 95% confidence interval, H0 is rejected and we can conclude that the distribution of waterpoints are not randomly distributed
 
 ## 7 Local Colocation Quotients (LCLQ)
 
 ## 7.1 Visualising the SF Layer
 
 ```{r}
-tmap_mode("view")
-tm_shape(osun) +
-  tm_polygons() +
-  tm_shape(wpdx_sf_nga) +
-  tm_dots(col = "status_clean", 
-          size = 0.01,
-          border.col = "black",
-          border.lwd = 0.5) +
-  tm_view(set.zoom.limits = c(12, 16))
-```
-
-## 7.2 Applying Local Colocation Quotients
-
-```{r}
-nb <- include_self(
-  st_knn(st_geometry(wpdx_sf_nga), 6))
+#wpdx_lclq <- wpdx_sf_nga %>% 
+#  filter(status_clean %in% 
+#           c("Functional",
+#            "Non-Functional"))
 ```
 
 ```{r}
-wt <- st_kernel_weights(nb,
-                        wpdx_sf_nga, 
-                        "gaussian",
-                        adaptive = TRUE)
+#tmap_mode("view")
+#tm_shape(osun) +
+#  tm_polygons() +
+#  tm_shape(wpdx_lclq) +
+#  tm_dots(col = "status_clean", 
+#          size = 0.01,
+#          border.col = "black",
+#          border.lwd = 0.5)
+```
+
+![](/_site/Take_home_ex/Images/photo_6287042771235746543_y.jpg)
+
+## 7.2 Applying Local Colocation Quotients (LCLQ)
+
+```{r}
+#nb <- include_self(
+#  st_knn(st_geometry(wpdx_lclq), 6))
 ```
 
 ```{r}
-Functional <- wpdx_sf_nga %>%
-  filter(status_clean == "Functional")
-A <- Functional$status_clean
+#wt <- st_kernel_weights(nb,
+#                        wpdx_lclq, 
+#                        "gaussian",
+#                        adaptive = TRUE)
 ```
 
 ```{r}
-NonFunctional <- wpdx_sf_nga %>%
-  filter(status_clean == "Non-Functional")
-B <- NonFunctional$status_clean
-
+#Functional <- wpdx_lclq %>%
+#  filter(status_clean == "Functional")
+#A <- Functional$status_clean
 ```
 
 ```{r}
-LCLQ <- local_colocation(A, B, nb, wt , 30)
+#NonFunctional <- wpdx_lclq %>%
+#  filter(status_clean == "Non-Functional")
+#B <- NonFunctional$status_clean
 ```
 
 ```{r}
-LCLQ_sf_nga <- cbind(wpdx_sf_nga, LCLQ)
+#LCLQ <- local_colocation(A, B, nb, wt , 20)
 ```
 
 ```{r}
-tmap_mode("view")
-tm_shape(osun) +
-  tm_polygons() +
-  tm_shape(LCLQ_sf_nga) +
-  tm_dots(col = "status_clean", 
-          size = 0.01,
-          border.col = "black",
-          border.lwd = 0.5) +
-  tm_view(set.zoom.limits = c(12, 16))
+#LCLQ_sf_nga <- cbind(wpdx_lclq, LCLQ)
 ```
+
+```{r}
+#tmap_mode("view")
+#tm_shape(osun) +
+#  tm_polygons() +
+#  tm_shape(LCLQ_sf_nga) +
+#  tm_dots(col = "status_clean", 
+#          size = 0.01,
+#          border.col = "black",
+#          border.lwd = 0.5)
+```
+
+![](/_site/Take_home_ex/Images/photo_6287042771235746543_y.jpg)
