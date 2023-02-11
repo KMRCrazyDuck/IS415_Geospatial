@@ -11,7 +11,7 @@ execute:
 editor: visual
 ---
 
-# 1. Getting Started 
+# 1. Getting Started
 
 ```{r}
 pacman::p_load(tidyverse, tmap, sf, sfdep)
@@ -20,6 +20,7 @@ pacman::p_load(tidyverse, tmap, sf, sfdep)
 ## 1.1 Importing Data
 
 Importing data shapefile for study area
+
 ```{r}
 studyArea <- st_read(dsn = "Data/Geospatial", 
                 layer = "study_area") %>%
@@ -27,6 +28,7 @@ studyArea <- st_read(dsn = "Data/Geospatial",
 ```
 
 Importing data shapefile for stores
+
 ```{r}
 stores <- st_read(dsn = "Data/Geospatial", 
                 layer = "stores") %>%
