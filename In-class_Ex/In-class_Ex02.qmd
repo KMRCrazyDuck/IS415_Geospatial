@@ -109,7 +109,7 @@ After running the code, we can confirm that the data frame has been converted to
 
 ### 2.3.1 Importing WPdx + Aspatial Data
 
-Since WPdx+ data set is in csv format, we will use read_csv() of readr package to import Water_Point_Data_Exchange_-_Plus__WPdx__.csv and output it to an R object called wpdx.
+Since WPdx+ data set is in csv format, we will use read_csv() of readr package to import Water_Point_Data_Exchange\_-\_Plus**WPdx**.csv and output it to an R object called wpdx.
 
 ```{r}
 wpdx <- read_csv("data/Aspatial/Water_Point_Data_Exchange_-_Plus__WPdx__.csv") %>%
@@ -120,7 +120,7 @@ wpdx <- read_csv("data/Aspatial/Water_Point_Data_Exchange_-_Plus__WPdx__.csv") %
 list(wpdx)
 ```
 
-Our output shows our wpdx tibble data frame consists of 97,478 rows and 74 columns. The useful fields we would be paying attention to is the #lat_deg and #lon_deg columns, which are in the decimal degree format. By viewing the Data Standard on wpdx’s website, we know that the latitude and longitude is in the wgs84 Geographic Coordinate System.
+Our output shows our wpdx tibble data frame consists of 97,478 rows and 74 columns. The useful fields we would be paying attention to is the #lat_deg and #lon_deg columns, which are in the decimal degree format. By viewing the Data Standard on wpdx's website, we know that the latitude and longitude is in the wgs84 Geographic Coordinate System.
 
 ### 2.3.2 Creating a Simple Feature Data Frame from an Aspatial Data Frame
 
@@ -245,7 +245,7 @@ nigeria_wp <- nigeria26391 %>%
     st_intersects(nigeria26391, wpdx_unknown)))
 ```
 
-## 4.4 Saving the Analytical Data in rds format 
+## 4.4 Saving the Analytical Data in rds format
 
 In order to retain the sf data structure for subsequent analysis, we should save the sf dataframe into rds format.
 
