@@ -593,21 +593,21 @@ The code chunk below is used to perform the hypothesis testing
 ## 7.1 Visualising the SF Layer
 
 ```{r}
-#wpdx_lclq <- wpdx_sf_nga %>% 
-#  filter(status_clean %in% 
-#           c("Functional",
-#            "Non-Functional"))
+# wpdx_lclq <- wpdx_sf_nga %>% 
+#   filter(status_clean %in% 
+#            c("Functional",
+#             "Non-Functional"))
 ```
 
 ```{r}
-#tmap_mode("view")
-#tm_shape(osun) +
-#  tm_polygons() +
-#  tm_shape(wpdx_lclq) +
-#  tm_dots(col = "status_clean", 
-#          size = 0.01,
-#          border.col = "black",
-#          border.lwd = 0.5)
+# tmap_mode("view")
+# tm_shape(osun) +
+#   tm_polygons() +
+#   tm_shape(wpdx_lclq) +
+#   tm_dots(col = "status_clean", 
+#           size = 0.01,
+#           border.col = "black",
+#           border.lwd = 0.5)
 ```
 
 ![](/_site/Take_home_ex/Images/photo_6287042771235746543_y.jpg)
@@ -615,46 +615,56 @@ The code chunk below is used to perform the hypothesis testing
 ## 7.2 Applying Local Colocation Quotients (LCLQ)
 
 ```{r}
-#nb <- include_self(
-#  st_knn(st_geometry(wpdx_lclq), 6))
+# nb <- include_self(
+#   st_knn(st_geometry(wpdx_lclq), 6))
 ```
 
 ```{r}
-#wt <- st_kernel_weights(nb,
-#                        wpdx_lclq, 
-#                        "gaussian",
-#                        adaptive = TRUE)
+# wt <- st_kernel_weights(nb,
+#                         wpdx_lclq, 
+#                         "gaussian",
+#                         adaptive = TRUE)
 ```
 
 ```{r}
-#Functional <- wpdx_lclq %>%
-#  filter(status_clean == "Functional")
-#A <- Functional$status_clean
+# Functional <- wpdx_lclq %>%
+#   filter(status_clean == "Functional")
+# A <- Functional$status_clean
 ```
 
 ```{r}
-#NonFunctional <- wpdx_lclq %>%
-#  filter(status_clean == "Non-Functional")
-#B <- NonFunctional$status_clean
+# NonFunctional <- wpdx_lclq %>%
+#   filter(status_clean == "Non-Functional")
+# B <- NonFunctional$status_clean
 ```
 
 ```{r}
-#LCLQ <- local_colocation(A, B, nb, wt , 20)
+# LCLQ <- local_colocation(A, B, nb, wt , 20)
 ```
 
 ```{r}
-#LCLQ_sf_nga <- cbind(wpdx_lclq, LCLQ)
+# LCLQ_sf_nga <- cbind(wpdx_lclq, LCLQ)
 ```
 
 ```{r}
-#tmap_mode("view")
-#tm_shape(osun) +
-#  tm_polygons() +
-#  tm_shape(LCLQ_sf_nga) +
-#  tm_dots(col = "status_clean", 
-#          size = 0.01,
-#          border.col = "black",
-#          border.lwd = 0.5)
+# tmap_mode("view")
+# tm_shape(osun) +
+#   tm_polygons() +
+#   tm_shape(LCLQ_sf_nga) +
+#   tm_dots(col = "Non.Functional", 
+#           size = 0.01,
+#           border.col = "black",
+#           border.lwd = 0.5)
 ```
 
-![](/_site/Take_home_ex/Images/photo_6287042771235746543_y.jpg)
+![](/_site/Take_home_ex/Images/1.000Missing.PNG)
+
+After applying the local colocation quotients for the Osun State, we can conclude that there are many 'missing' water points in Osun which implies that there is no correlation between the water points.
+
+After performing the 'clark evans test', 'L function' and the 'local colocation quotients', we can conclude that H0 is rejected, the functional and non functional water points in Osun State are not randomly distributed. In addition, there is no correlation between the water points.
+
+***Note to Professor***,
+
+I have commented out the code chunks above after section 6.2 because when rendered, the take_home_ex1.html file is over 70mb which I have issue committing and pushing to my github repository. The images from section 6.2 onwards are statically pasted to reduce the file size.
+
+*End of take home exercise 1*
