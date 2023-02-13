@@ -292,5 +292,19 @@
     "title": "In-class Exercise 6",
     "section": "1.3 Performing relational join",
     "text": "1.3 Performing relational join\nThe code chunk below will be used to update the attribute table of hunan’s SpatialPolygonsDataFrame with the attribute fields of hunan2012 dataframe. This is performed by using left_join() of dplyr package.\nIn order to retain the geospatial properties, the left data frame must be the sf data.frame (i.e. hunan)\n\nhunan_GDPPC <- left_join(hunan,hunan2012)%>%\n  select(1:4, 7, 15)"
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex06.html#identify-area-neighbours",
+    "href": "In-class_Ex/In-class_Ex06.html#identify-area-neighbours",
+    "title": "In-class Exercise 6",
+    "section": "2.1 Identify Area Neighbours",
+    "text": "2.1 Identify Area Neighbours\nIn the code chunk below st_cotiguity() is used to derive a contiguity neighbour list by using Queen’s method.\nQueen Contiguity Weight Matrix\n\ncn_queen <- hunan_GDPPC %>%\n  mutate(nb = st_contiguity(geometry),\n         .before = 1)\n\nIn the code chunk below st_cotiguity() is used to derive a contiguity neighbour list by using Rook’s method setting argument queen to FALSE.\nRook Contiguity Weight Matrix\n\ncn_rook <- hunan_GDPPC %>%\n  mutate(nb = st_contiguity(geometry),\n         queen = FALSE,\n         .before = 1)"
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex06.html#computing-contiguity-weights",
+    "href": "In-class_Ex/In-class_Ex06.html#computing-contiguity-weights",
+    "title": "In-class Exercise 6",
+    "section": "2.2 Computing contiguity weights",
+    "text": "2.2 Computing contiguity weights\nContiguity weights: Queen’s method\n\nwm_q <- hunan_GDPPC %>%\n  mutate(nb = st_contiguity(geometry),\n         wt = st_weights(nb),\n         .before = 1)\n\nContiguity weights: Rook’s method\n\nwm_q <- hunan_GDPPC %>%\n  mutate(nb = st_contiguity(geometry),\n  queen = FALSE,\n  wt = st_weights(nb),\n  .before = 1)"
   }
 ]
