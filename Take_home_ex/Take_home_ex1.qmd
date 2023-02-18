@@ -564,7 +564,7 @@ In this section, second spatial point L-function will be using Lest() of spatsta
 #     ylab= "L(d)-r", xlab = "d(m)")
 ```
 
-![](/_site/Take_home_ex/Images/photo_6287042771235746545_y.jpg)
+![](/_site/Take_home_ex/Images/L%20Function.PNG)
 
 ## 6.2.2 Performing Complete Spatial Random Test
 
@@ -586,7 +586,7 @@ The code chunk below is used to perform the hypothesis testing
 #plot(L_ck.csr, . - r ~ r, xlab="d", ylab="L(d)-r")
 ```
 
-![](/_site/Take_home_ex/Images/photo_6287042771235746544_y.jpg)From the chart, given the L_ck.csr plotted graph exited the envelope this shows that it is lesser than 0.05 of 95% confidence interval, H0 is rejected and we can conclude that the distribution of waterpoints are not randomly distributed
+![](/_site/Take_home_ex/Images/L_ck.csr.PNG)From the chart, given the L_ck.csr plotted graph exited the envelope this shows that it is lesser than 0.05 of 95% confidence interval, H0 is rejected and we can conclude that the distribution of waterpoints are not randomly distributed
 
 ## 7 Local Colocation Quotients (LCLQ)
 
@@ -610,7 +610,7 @@ The code chunk below is used to perform the hypothesis testing
 #           border.lwd = 0.5)
 ```
 
-![](/_site/Take_home_ex/Images/photo_6287042771235746543_y.jpg)
+![](/_site/Take_home_ex/Images/v_sf_layer.jfif)
 
 ## 7.2 Applying Local Colocation Quotients (LCLQ)
 
@@ -657,7 +657,7 @@ The code chunk below is used to perform the hypothesis testing
 #           border.lwd = 0.5)
 ```
 
-![](/_site/Take_home_ex/Images/1.000Missing.PNG)
+![](/_site/Take_home_ex/Images/1.00.PNG)
 
 After applying the local colocation quotients for the Osun State, we can conclude that there are many 'missing' water points in Osun which implies that there is no correlation between the water points.
 
