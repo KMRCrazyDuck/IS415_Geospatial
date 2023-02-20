@@ -38,7 +38,7 @@ In this hands-on exercise, you will learn how to compute Global and Local Measur
 # 1. Installing and Loading R packages 
 
 ```{r}
-pacman::p_load(sf, sfdep, tmap, tidyverse)
+pacman::p_load(sf, sfdep, tmap, tidyverse, plotly, zoo, Kendall)
 ```
 
 ## 1.1 Importing the Geospatial Data
@@ -159,4 +159,120 @@ lisa
 
 Variable mean and pysal value should be the same. For take home exercise 2, stay with mean
 
+## 3.7 Visualising local Moran's I
 
+### 3.7.1 Computing ii
+
+```{r}
+tmap_mode("plot")
+tm_shape(lisa) +
+  tm_fill("ii") +
+  tm_borders(alpha = 0.5) +
+  tm_view(set.zoom.limits = c(6,8))
+```
+
+### 3.7.2 Computing p_ii
+
+```{r}
+tmap_mode("plot")
+tm_shape(lisa) +
+  tm_fill("p_ii") +
+  tm_borders(alpha = 0.5)
+```
+
+Ideally should use p_ii_sim variable of lisa so that results produced is stable.
+
+### 3.7.3 Visualising the local Moran's I Map
+
+```{r}
+lisa_sig <- lisa %>%
+  filter(p_ii < 0.05)
+tmap_mode("plot")
+tm_shape(lisa) +
+  tm_polygons() +
+  tm_borders(alpha = 0.5) +
+tm_shape(lisa_sig) +
+  tm_fill("mean") + 
+  tm_borders(alpha = 0.4)
+```
+
+For take home exercise 2, add on to use insignificant on top of LL,HL,LH,HH, no need to use LISA but hot & cold spot areas
+
+# 4. Hot Spot and Cold Spot Analysis
+
+```{r}
+HCSA <- wm_q %>%
+  mutate(local_GI = local_gstar_perm(
+    GDPPC, nb, wt, nsim = 99),
+    .before = 1) %>%
+  unnest(local_GI)
+
+HCSA
+```
+
+## 4.1 Visualising Gi*
+
+```{r}
+tmap_mode("view")
+tm_shape(HCSA) +
+  tm_fill("gi_star") +
+  tm_borders(alpha = 0.5) +
+  tm_view(set.zoom.limits = c(6,8))
+```
+
+## 4.2 Visualising the p value of HCSA
+```{r}
+tmap_mode("plot")
+tm_shape(HCSA) +
+  tm_fill("p_sim") +
+  tm_borders(alpha = 0.5)
+```
+
+
+# 5. Mann-Kendall Test
+
+## 5.1 Import files of Hunan GDPPC
+
+```{r}
+GDPPC <- read_csv("Data/Aspatial/Hunan_GDPPC.csv")
+```
+
+### 5.1.1 Creating a time series cube
+
+```{r}
+GDPPC_st <- spacetime(GDPPC, hunan,
+                      .loc_col = "County",
+                      .time_col = "Year")
+```
+
+To construct spacetime cube, we must obtain the location and time
+
+```{r}
+GDPPC_nb <- GDPPC_st %>%
+  activate("geometry") %>%
+  mutate(
+    nb = include_self(st_contiguity(geometry)),
+    wt = st_weights(nb)
+  ) %>%
+  set_nbs("nb") %>%
+  set_wts("wt")
+```
+
+## 5.2 Arrange to show significant hotspot and coldspot areas
+
+```{r}
+
+```
+
+## 5.3 Performing Emerging Hotspot Analysis
+
+```{r}
+ehsa <- emerging_hotspot_analysis(
+  x = GDPPC_st,
+  .var = "GDPPC",
+  k = 1,
+  nsim = 99
+)
+```
+
+## 5.4 Visualising EHSA
