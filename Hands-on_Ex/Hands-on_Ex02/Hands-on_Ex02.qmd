@@ -20,7 +20,7 @@ date: "`r Sys.Date()`"
 Among 4 packages, **readr, tidyr and dplyr** are part of **tidyverse** package
 
 ```{r}
-pacman::p_load(sf, tmap, tidyverse)
+pacman::p_load(sf, tmap, tidyverse, readr, dplyr, tidyr)
 ```
 
 ## 2.2 Importing a geospatial data into R

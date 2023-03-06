@@ -56,7 +56,7 @@ library('pacman')
 Next, pacman assists us by helping us load R packages that we require, sf, tidyverse and funModeling.
 
 ```{r}
-pacman::p_load(sf, tidyverse, funModeling)
+pacman::p_load(sf, tidyverse, funModeling, readr, dplyr, knitr, tidyr)
 ```
 
 ## 2.2 geoBoundaries Nigeria Level-2 Administrative Boundary Dataset
@@ -112,7 +112,7 @@ After running the code, we can confirm that the data frame has been converted to
 Since WPdx+ data set is in csv format, we will use read_csv() of readr package to import Water_Point_Data_Exchange\_-\_Plus**WPdx**.csv and output it to an R object called wpdx.
 
 ```{r}
-wpdx <- read_csv("data/Aspatial/Water_Point_Data_Exchange_-_Plus__WPdx__.csv") %>%
+wpdx <- read_csv("Data/Aspatial/Water_Point_Data_Exchange.csv") %>%
   filter(`#clean_country_name` == "Nigeria")
 ```
 

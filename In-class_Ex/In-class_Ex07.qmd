@@ -35,7 +35,7 @@ In this hands-on exercise, you will learn how to compute Global and Local Measur
 
 -   to visualise the analysis output by using **tmap** package.
 
-# 1. Installing and Loading R packages 
+# 1. Installing and Loading R packages
 
 ```{r}
 pacman::p_load(sf, sfdep, tmap, tidyverse, plotly, zoo, Kendall)
@@ -68,6 +68,7 @@ The code chunk below will be used to update the attribute table of hunan's Spati
 hunan_GDPPC <- left_join(hunan,hunan2012)%>%
   select(1:4, 7, 15)
 ```
+
 # 2. Plotting a Choropleth Map
 
 ```{r}
@@ -210,7 +211,7 @@ HCSA <- wm_q %>%
 HCSA
 ```
 
-## 4.1 Visualising Gi*
+## 4.1 Visualising Gi\*
 
 ```{r}
 tmap_mode("view")
@@ -221,13 +222,13 @@ tm_shape(HCSA) +
 ```
 
 ## 4.2 Visualising the p value of HCSA
+
 ```{r}
 tmap_mode("plot")
 tm_shape(HCSA) +
   tm_fill("p_sim") +
   tm_borders(alpha = 0.5)
 ```
-
 
 # 5. Mann-Kendall Test
 

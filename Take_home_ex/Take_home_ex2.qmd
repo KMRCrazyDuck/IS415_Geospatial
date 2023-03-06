@@ -2,7 +2,7 @@
 title: "Take Home Exercise 2"
 author: "Kwek Ming Rong"
 date: "20 February 2023"
-date-modified: "`r Sys.Date()`"
+date-modified: "01 March 2023"
 format: html
 execute:
   eval: true

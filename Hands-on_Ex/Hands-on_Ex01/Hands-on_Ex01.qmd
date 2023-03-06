@@ -12,7 +12,7 @@ date: "`r Sys.Date()`"
 In this section, I will install and load tidyverse and sf packages.
 
 ```{r}
-pacman::p_load(tidyverse, sf)
+pacman::p_load(tidyverse, sf, dplyr, readr)
 ```
 
 ## 1.2 Importing a geospatial data

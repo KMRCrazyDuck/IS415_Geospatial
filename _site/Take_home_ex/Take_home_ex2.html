@@ -126,7 +126,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <script src="../site_libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
-<script src="../site_libs/htmlwidgets-1.6.0/htmlwidgets.js"></script>
+<script src="../site_libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
 <script src="../site_libs/plotly-binding-4.10.1/plotly.js"></script>
 <script src="../site_libs/typedarray-0.1/typedarray.min.js"></script>
 <script src="../site_libs/jquery-3.5.1/jquery.min.js"></script>
@@ -192,6 +192,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <a class="dropdown-item" href="../Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.html">
  <span class="dropdown-text">Hands-on Exercise 8</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09.html">
+ <span class="dropdown-text">Hands-on Exercise 9</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -223,6 +227,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <a class="dropdown-item" href="../In-class_Ex/In-class_Ex07.html">
  <span class="dropdown-text">In Class Exercise 7</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../In-class_Ex/In-class_Ex08.html">
+ <span class="dropdown-text">In Class Exercise 8</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -237,6 +245,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         <li>
     <a class="dropdown-item" href="../Take_home_ex/Take_home_ex2.html">
  <span class="dropdown-text">Take home Exercise 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Take_home_ex/Take_home_ex3.html">
+ <span class="dropdown-text">Take home Exercise 3</span></a>
   </li>  
     </ul>
   </li>
@@ -1398,21 +1410,21 @@ Projected CRS: DGN95 / Indonesia TM-3 zone 54.1
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3,132 x 13
 # Groups:   Date [12]
-   Date       Sub_Di~1 Vacci~2 nb    wt    gi_star    e_gi  var_gi p_value p_sim
-   &lt;date&gt;     &lt;chr&gt;      &lt;dbl&gt; &lt;lis&gt; &lt;lis&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
- 1 2021-07-31 KEAGUNG~    53.3 &lt;int&gt; &lt;dbl&gt;   2.44  0.00383 2.13e-8 1.46e-2  0.02
- 2 2021-07-31 GLODOK      61.6 &lt;int&gt; &lt;dbl&gt;   3.85  0.00384 1.56e-8 1.18e-4  0.02
- 3 2021-07-31 HARAPAN~    49.7 &lt;int&gt; &lt;dbl&gt;   0.309 0.00382 2.20e-8 7.57e-1  0.84
- 4 2021-07-31 CEMPAKA~    46.7 &lt;int&gt; &lt;dbl&gt;  -1.05  0.00383 1.53e-8 2.96e-1  0.34
- 5 2021-07-31 PASAR B~    59.3 &lt;int&gt; &lt;dbl&gt;   2.71  0.00383 1.38e-8 6.82e-3  0.02
- 6 2021-07-31 KARANG ~    52.2 &lt;int&gt; &lt;dbl&gt;   1.67  0.00382 2.17e-8 9.49e-2  0.1 
- 7 2021-07-31 MANGGA ~    51.6 &lt;int&gt; &lt;dbl&gt;   1.35  0.00384 1.80e-8 1.77e-1  0.22
- 8 2021-07-31 PETOJO ~    47.2 &lt;int&gt; &lt;dbl&gt;  -0.179 0.00382 1.92e-8 8.58e-1  0.96
- 9 2021-07-31 SENEN       54.4 &lt;int&gt; &lt;dbl&gt;   1.51  0.00382 1.20e-8 1.32e-1  0.1 
-10 2021-07-31 BUNGUR      52.8 &lt;int&gt; &lt;dbl&gt;   0.797 0.00385 1.54e-8 4.25e-1  0.48
-# ... with 3,122 more rows, 3 more variables: p_folded_sim &lt;dbl&gt;,
-#   skewness &lt;dbl&gt;, kurtosis &lt;dbl&gt;, and abbreviated variable names
-#   1: Sub_District, 2: Vaccination_Rate</code></pre>
+   Date       Sub_District   Vacci~1 nb    wt    gi_star    e_gi  var_gi p_value
+   &lt;date&gt;     &lt;chr&gt;            &lt;dbl&gt; &lt;lis&gt; &lt;lis&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+ 1 2021-07-31 KEAGUNGAN         53.3 &lt;int&gt; &lt;dbl&gt;   2.54  0.00387 1.24e-8   2.87 
+ 2 2021-07-31 GLODOK            61.6 &lt;int&gt; &lt;dbl&gt;   3.71  0.00403 1.19e-8   2.65 
+ 3 2021-07-31 HARAPAN MULIA     49.7 &lt;int&gt; &lt;dbl&gt;   0.280 0.00380 1.66e-8   0.511
+ 4 2021-07-31 CEMPAKA BARU      46.7 &lt;int&gt; &lt;dbl&gt;  -0.961 0.00376 1.29e-8  -0.465
+ 5 2021-07-31 PASAR BARU        59.3 &lt;int&gt; &lt;dbl&gt;   2.70  0.00395 1.15e-8   1.79 
+ 6 2021-07-31 KARANG ANYAR      52.2 &lt;int&gt; &lt;dbl&gt;   1.82  0.00385 1.45e-8   1.86 
+ 7 2021-07-31 MANGGA DUA SE~    51.6 &lt;int&gt; &lt;dbl&gt;   1.66  0.00385 1.49e-8   1.43 
+ 8 2021-07-31 PETOJO UTARA      47.2 &lt;int&gt; &lt;dbl&gt;  -0.236 0.00375 1.16e-8   0.487
+ 9 2021-07-31 SENEN             54.4 &lt;int&gt; &lt;dbl&gt;   1.37  0.00386 1.04e-8   1.18 
+10 2021-07-31 BUNGUR            52.8 &lt;int&gt; &lt;dbl&gt;   0.922 0.00387 1.04e-8   0.703
+# ... with 3,122 more rows, 4 more variables: p_sim &lt;dbl&gt;, p_folded_sim &lt;dbl&gt;,
+#   skewness &lt;dbl&gt;, kurtosis &lt;dbl&gt;, and abbreviated variable name
+#   1: Vaccination_Rate</code></pre>
 </div>
 </div>
 </section>
@@ -1475,28 +1487,28 @@ First 10 features:
 8  0.000000000, 0.001071983, 0.001039284, 0.001417870, 0.001110612, 0.001297268
 9  0.000000000, 0.001071983, 0.001039284, 0.001417870, 0.001110612, 0.001297268
 10 0.000000000, 0.001071983, 0.001039284, 0.001417870, 0.001110612, 0.001297268
-    gi_star        e_gi       var_gi     p_value p_sim p_folded_sim    skewness
-1  2.478859 0.003831172 8.419778e-10 0.013180341  0.02         0.01 -0.03194341
-2  2.825027 0.003827108 7.494269e-10 0.004727670  0.04         0.02 -0.06356613
-3  2.856078 0.003828377 6.980492e-10 0.004289104  0.02         0.01  0.09797571
-4  2.400280 0.003831389 1.665572e-09 0.016382514  0.02         0.01 -0.75383323
-5  2.340497 0.003839767 1.969413e-09 0.019258078  0.02         0.01 -0.45706127
-6  2.697283 0.003843766 4.229906e-09 0.006990777  0.02         0.01  0.19649652
-7  2.737341 0.003831004 9.440138e-10 0.006193804  0.02         0.01 -0.13372915
-8  2.601179 0.003833862 7.779184e-10 0.009290410  0.02         0.01 -0.51408533
-9  2.442508 0.003830045 2.133669e-08 0.014585591  0.02         0.01 -0.40723702
-10 2.631489 0.003829259 7.973859e-10 0.008501151  0.04         0.02  0.23980167
+    gi_star        e_gi       var_gi  p_value       p_sim p_folded_sim skewness
+1  2.458185 0.003844465 4.719854e-10 2.698959 0.006955666         0.02     0.01
+2  2.617693 0.003844331 5.194092e-10 2.637680 0.008347537         0.04     0.02
+3  2.647271 0.003847590 5.436358e-10 2.412370 0.015849175         0.02     0.01
+4  2.667891 0.003849749 1.087432e-09 2.413818 0.015786353         0.02     0.01
+5  2.381935 0.003842751 1.634566e-09 2.495261 0.012586449         0.02     0.01
+6  2.920481 0.003872762 3.342052e-09 2.532910 0.011311991         0.04     0.02
+7  2.594238 0.003844674 6.984154e-10 2.665185 0.007694606         0.02     0.01
+8  2.525165 0.003848330 6.200440e-10 2.332546 0.019671973         0.04     0.02
+9  2.535091 0.003866740 1.239652e-08 2.874848 0.004042217         0.04     0.02
+10 2.546472 0.003845743 5.032007e-10 2.577723 0.009945355         0.02     0.01
       kurtosis                       geometry
-1  -0.81316154 MULTIPOLYGON (((-3626874 69...
-2   0.55021722 MULTIPOLYGON (((-3626874 69...
-3  -0.50749002 MULTIPOLYGON (((-3626874 69...
-4   0.54499553 MULTIPOLYGON (((-3626874 69...
-5   0.28836755 MULTIPOLYGON (((-3626874 69...
-6   0.03187466 MULTIPOLYGON (((-3626874 69...
-7  -0.02562365 MULTIPOLYGON (((-3626874 69...
-8   0.07882560 MULTIPOLYGON (((-3626874 69...
-9   0.28865884 MULTIPOLYGON (((-3626874 69...
-10 -0.20275849 MULTIPOLYGON (((-3626874 69...</code></pre>
+1   0.01180204 MULTIPOLYGON (((-3626874 69...
+2   0.05312438 MULTIPOLYGON (((-3626874 69...
+3   0.20010357 MULTIPOLYGON (((-3626874 69...
+4  -0.97424506 MULTIPOLYGON (((-3626874 69...
+5  -0.15423806 MULTIPOLYGON (((-3626874 69...
+6   0.01839206 MULTIPOLYGON (((-3626874 69...
+7  -0.34317063 MULTIPOLYGON (((-3626874 69...
+8  -0.13637911 MULTIPOLYGON (((-3626874 69...
+9   0.17937665 MULTIPOLYGON (((-3626874 69...
+10  0.01941702 MULTIPOLYGON (((-3626874 69...</code></pre>
 </div>
 </div>
 <p>We will proceed with visualizing the first month (July 2021). We will be plotting both the Gi* value and the p-value of Gi* for the Vaccination Rates.</p>
@@ -1610,135 +1622,104 @@ First 10 features:
 <div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a>no_of_subdistricts_freq <span class="ot">=</span> <span class="fu">filter</span>(jakarta_gi_values, p_sim <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span>
 <span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(<span class="fu">table</span>(no_of_subdistricts_freq<span class="sc">$</span>Sub_District))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>                      Var1 Freq
-1                    ANCOL    1
-2             BALE KAMBANG   11
-3              BALI MESTER    4
-4                     BARU    9
-5               BATU AMPAR   12
-6          BENDUNGAN HILIR   10
-7              BIDARA CINA    9
-8      CEMPAKA PUTIH BARAT    1
-9                  CIBUBUR   10
-10                CIGANJUR   10
-11               CIJANTUNG   10
-12                  CIKINI    1
-13                  CIKOKO    8
-14          CILANDAK BARAT    3
-15          CILANDAK TIMUR    7
-16               CILILITAN    4
-17               CILINCING   10
-18                CIPAYUNG    6
-19                 CIPEDAK   10
-20  CIPINANG BESAR SELATAN    3
-21    CIPINANG BESAR UTARA    8
-22       CIPINANG CEMPEDAK   12
-23          CIPINANG MUARA    2
-24                 CIPULIR    2
-25                 CIRACAS    1
-26             DUREN SAWIT    1
-27            DURI SELATAN    1
-28                   GALUR    2
-29                  GAMBIR    5
-30                  GEDONG    3
-31                  GELORA    7
-32                  GLODOK   12
-33              GONDANGDIA    7
-34          GROGOL SELATAN    1
-35            GROGOL UTARA    1
-36   GUNUNG SAHARI SELATAN    1
-37     GUNUNG SAHARI UTARA    1
-38   HALIM PERDANA KUSUMAH   11
-39               JAGAKARSA    9
-40              JATINEGARA    1
-41         JATINEGARA KAUM    1
-42           JEMBATAN LIMA    1
-43              JOHAR BARU    1
-44                KALIBARU   10
-45                KALISARI    9
-46                   KAMAL    1
-47             KAMAL MUARA    1
-48            KAMPUNG BALI   12
-49          KAMPUNG MELAYU    3
-50            KAMPUNG RAWA    3
-51          KAMPUNG TENGAH   12
-52             KAPUK MUARA    2
-53           KARET TENGSIN    4
-54              KAYU MANIS    1
-55               KEAGUNGAN   12
-56               KEBAGUSAN    5
-57            KEBON KACANG   12
-58            KEBON MELATI   12
-59             KEBON SIRIH    7
-60              KELAPA DUA    3
-61        KELAPA DUA WETAN   11
-62     KELAPA GADING BARAT    2
-63     KELAPA GADING TIMUR    7
-64                 KLENDER    2
-65                    KOJA    2
-66                  KRAMAT    2
-67             KRAMAT JATI    3
-68                   LAGOA    9
-69           LENTENG AGUNG    9
-70            LUBANG BUAYA    5
-71             MALAKA JAYA    4
-72             MALAKA SARI    1
-73            MANGGA BESAR   12
-74       MANGGARAI SELATAN    8
-75                  MAPHAR    3
-76                 MARUNDA    1
-77                 MELAWAI    2
-78                 MENTENG    7
-79                  MUNJUL    9
-80              PAL MERIAM    1
-81                PAPANGGO    1
-82              PASAR BARU    2
-83           PASAR MANGGIS    2
-84          PEGANGSAAN DUA    3
-85           PEJATEN TIMUR    3
-86                 PEKAYON    8
-87            PENGGILINGAN    1
-88             PENJARINGAN    2
-89              PETAMBURAN   12
-90               PETOGOGAN    2
-91          PETOJO SELATAN    7
-92            PETOJO UTARA    2
-93        PETUKANGAN UTARA    1
-94            PINANG RANTI    1
-95               PINANGSIA    3
-96           PISANGAN BARU    2
-97          PISANGAN TIMUR    1
-98            PONDOK BAMBU    4
-99             PONDOK KOPI    2
-100            PONDOK LABU    9
-101            PULO GADUNG    2
-102                RAGUNAN    7
-103               RAMBUTAN    1
-104     RAWA BADAK SELATAN    1
-105       RAWA BADAK UTARA    4
-106             RAWA BARAT    1
-107             RAWA BUNGA    9
-108             ROA MALAKA    1
-109                 SELONG    2
-110           SEMPER BARAT    5
-111           SEMPER TIMUR    4
-112                SENAYAN    2
-113                  SENEN    2
-114              SRENGSENG    1
-115        SRENGSENG SAWAH    9
-116       SUKABUMI SELATAN    4
-117         SUKABUMI UTARA    3
-118           SUNTER AGUNG    1
-119            SUNTER JAYA    4
-120           TANAH SEREAL    5
-121           TANAH TINGGI    2
-122                 TANGKI   10
-123          TANJUNG BARAT    6
-124            TEBET BARAT   10
-125            TEBET TIMUR   10
-126                 TOMANG    1
-127             TUGU UTARA    5
-128                ULUJAMI    1</code></pre>
+<pre><code>                     Var1 Freq
+1                   ANCOL    2
+2            BALE KAMBANG    3
+3             BALI MESTER    7
+4                    BARU    8
+5              BATU AMPAR   12
+6         BENDUNGAN HILIR   10
+7             BIDARA CINA    4
+8     CEMPAKA PUTIH BARAT    1
+9                CIGANJUR    9
+10              CIJANTUNG    9
+11                 CIKINI    7
+12                 CIKOKO    2
+13         CILANDAK TIMUR    3
+14              CILILITAN    3
+15              CILINCING    9
+16               CIPAYUNG    1
+17                CIPEDAK    9
+18 CIPINANG BESAR SELATAN    2
+19   CIPINANG BESAR UTARA    5
+20      CIPINANG CEMPEDAK   12
+21         CIPINANG MUARA    1
+22                  GALUR    1
+23                 GAMBIR    4
+24                 GEDONG    6
+25                 GELORA    7
+26                 GLODOK    4
+27             GONDANGDIA    5
+28         GROGOL SELATAN    1
+29           GROGOL UTARA    1
+30  GUNUNG SAHARI SELATAN    2
+31              JAGAKARSA    9
+32        JATINEGARA KAUM    1
+33               KALISARI    7
+34                  KAMAL    1
+35            KAMAL MUARA    3
+36           KAMPUNG BALI   10
+37           KAMPUNG RAWA    1
+38         KAMPUNG TENGAH    4
+39                  KAPUK    2
+40          KARET TENGSIN    8
+41                KARTINI    1
+42              KEAGUNGAN   12
+43              KEBAGUSAN    7
+44           KEBON KACANG   12
+45           KEBON MELATI   11
+46            KEBON SIRIH    8
+47             KELAPA DUA    4
+48       KELAPA DUA WETAN    3
+49    KELAPA GADING TIMUR    1
+50                KLENDER    2
+51            KRAMAT JATI    3
+52            KRAMAT PELA    1
+53                  LAGOA    6
+54          LENTENG AGUNG   10
+55            MALAKA SARI    2
+56           MANGGA BESAR   12
+57      MANGGARAI SELATAN    4
+58                 MAPHAR    3
+59                MELAWAI    2
+60                MENTENG    9
+61          MENTENG DALAM    1
+62                 MUNJUL    9
+63              PEJAGALAN    1
+64          PEJATEN TIMUR    1
+65                PEKAYON    3
+66                PEKOJAN    1
+67            PENJARINGAN    2
+68             PETAMBURAN    9
+69              PETOGOGAN    2
+70           PINANG RANTI   11
+71          PISANGAN BARU    1
+72         PISANGAN TIMUR    2
+73           PONDOK BAMBU    2
+74          PONDOK KELAPA    1
+75            PONDOK LABU    4
+76         PONDOK RANGGON    1
+77            PULO GADUNG   12
+78       RAWA BADAK UTARA    4
+79             RAWA BUNGA    5
+80                ROROTAN    1
+81           SEMPER BARAT   10
+82           SEMPER TIMUR    9
+83                SENAYAN    2
+84                   SETU    1
+85                  SLIPI    1
+86        SRENGSENG SAWAH    9
+87       SUKABUMI SELATAN    3
+88               SUKAPURA    1
+89                TAMBORA    1
+90           TANAH SEREAL    1
+91           TANAH TINGGI    1
+92                 TANGKI    3
+93            TEBET BARAT    9
+94            TEBET TIMUR    3
+95             TEGAL ALUR    1
+96             TUGU UTARA    2
+97                ULUJAMI    1</code></pre>
 </div>
 </div>
 <p>From the table above, there are 128 sub-districts who have a significant vaccination rate p-value &lt; 0.05 at least once during the period of 12 months. Those sub-districts that have double digits frequency have a significant p value throughout the entire 12 months.</p>
@@ -1768,7 +1749,7 @@ First 10 features:
 <span id="cb120-7"><a href="#cb120-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-fa4f707f3b68aee4d57b" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-fa4f707f3b68aee4d57b">{"x":{"data":[{"x":[18839,18870,18900,18931,18961,18992,19023,19050,19082,19112,19143,19173],"y":[1.70753953311471,2.75728000745929,2.87326678293201,2.70160784797344,2.63109422126057,3.17099289449045,3.29164755748981,3.56688192246336,3.17467631984085,3.27172046133375,2.7883417134738,2.99537701302179],"text":["Date: 2021-07-31<br />gi_star: 1.707540","Date: 2021-08-31<br />gi_star: 2.757280","Date: 2021-09-30<br />gi_star: 2.873267","Date: 2021-10-31<br />gi_star: 2.701608","Date: 2021-11-30<br />gi_star: 2.631094","Date: 2021-12-31<br />gi_star: 3.170993","Date: 2022-01-31<br />gi_star: 3.291648","Date: 2022-02-27<br />gi_star: 3.566882","Date: 2022-03-31<br />gi_star: 3.174676","Date: 2022-04-30<br />gi_star: 3.271720","Date: 2022-05-31<br />gi_star: 2.788342","Date: 2022-06-30<br />gi_star: 2.995377"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.2283105022831,"r":7.30593607305936,"b":40.1826484018265,"l":43.1050228310502},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[18822.3,19189.7],"tickmode":"array","ticktext":["Okt 2021","Jan 2022","Apr 2022","Jul 2022"],"tickvals":[18901,18993,19083,19174],"categoryorder":"array","categoryarray":["Okt 2021","Jan 2022","Apr 2022","Jul 2022"],"nticks":null,"ticks":"outside","tickcolor":"rgba(179,179,179,1)","ticklen":3.65296803652968,"tickwidth":0.33208800332088,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(222,222,222,1)","gridwidth":0.33208800332088,"zeroline":false,"anchor":"y","title":{"text":"Date","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[1.61457241364728,3.6598490419308],"tickmode":"array","ticktext":["2.0","2.5","3.0","3.5"],"tickvals":[2,2.5,3,3.5],"categoryorder":"array","categoryarray":["2.0","2.5","3.0","3.5"],"nticks":null,"ticks":"outside","tickcolor":"rgba(179,179,179,1)","ticklen":3.65296803652968,"tickwidth":0.33208800332088,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(222,222,222,1)","gridwidth":0.33208800332088,"zeroline":false,"anchor":"x","title":{"text":"gi_star","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(179,179,179,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"3ecc19e73029":{"x":{},"y":{},"type":"scatter"}},"cur_data":"3ecc19e73029","visdat":{"3ecc19e73029":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-fa4f707f3b68aee4d57b">{"x":{"data":[{"x":[18839,18870,18900,18931,18961,18992,19023,19050,19082,19112,19143,19173],"y":[1.79537862048851,2.38482110945084,2.65426899842145,2.79286738433269,2.73072988508091,2.93997773939225,3.09232393036635,3.11140875867466,3.15256610832695,3.1825878153412,3.18960450095126,3.15635579674469],"text":["Date: 2021-07-31<br />gi_star: 1.795379","Date: 2021-08-31<br />gi_star: 2.384821","Date: 2021-09-30<br />gi_star: 2.654269","Date: 2021-10-31<br />gi_star: 2.792867","Date: 2021-11-30<br />gi_star: 2.730730","Date: 2021-12-31<br />gi_star: 2.939978","Date: 2022-01-31<br />gi_star: 3.092324","Date: 2022-02-27<br />gi_star: 3.111409","Date: 2022-03-31<br />gi_star: 3.152566","Date: 2022-04-30<br />gi_star: 3.182588","Date: 2022-05-31<br />gi_star: 3.189605","Date: 2022-06-30<br />gi_star: 3.156356"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.2283105022831,"r":7.30593607305936,"b":40.1826484018265,"l":43.1050228310502},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[18822.3,19189.7],"tickmode":"array","ticktext":["Okt 2021","Jan 2022","Apr 2022","Jul 2022"],"tickvals":[18901,18993,19083,19174],"categoryorder":"array","categoryarray":["Okt 2021","Jan 2022","Apr 2022","Jul 2022"],"nticks":null,"ticks":"outside","tickcolor":"rgba(179,179,179,1)","ticklen":3.65296803652968,"tickwidth":0.33208800332088,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(222,222,222,1)","gridwidth":0.33208800332088,"zeroline":false,"anchor":"y","title":{"text":"Date","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[1.72566732646537,3.2593157949744],"tickmode":"array","ticktext":["2.0","2.4","2.8","3.2"],"tickvals":[2,2.4,2.8,3.2],"categoryorder":"array","categoryarray":["2.0","2.4","2.8","3.2"],"nticks":null,"ticks":"outside","tickcolor":"rgba(179,179,179,1)","ticklen":3.65296803652968,"tickwidth":0.33208800332088,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(222,222,222,1)","gridwidth":0.33208800332088,"zeroline":false,"anchor":"x","title":{"text":"gi_star","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(179,179,179,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"30c862a26915":{"x":{},"y":{},"type":"scatter"}},"cur_data":"30c862a26915","visdat":{"30c862a26915":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div class="cell">
@@ -1779,9 +1760,9 @@ First 10 features:
 <span id="cb121-5"><a href="#cb121-5" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">unnest_wider</span>(mk)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 x 5
-    tau     sl     S     D  varS
-  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-1 0.394 0.0865    26  66.0  213.</code></pre>
+    tau        sl     S     D  varS
+  &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 0.909 0.0000521    60  66.0  213.</code></pre>
 </div>
 </div>
 <p>The p-value is 0.086 which is &gt; 0.05 hence p-value is not significant. Therefore, this is an upward but insignificant trend.</p>
@@ -1805,7 +1786,7 @@ First 10 features:
 <span id="cb124-7"><a href="#cb124-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-fdbfe9833c4ce312bf50" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-fdbfe9833c4ce312bf50">{"x":{"data":[{"x":[18839,18870,18900,18931,18961,18992,19023,19050,19082,19112,19143,19173],"y":[-1.24350156209694,-1.80113077891861,-2.84199996366059,-3.16754039507648,-3.23193189337477,-2.78701882993724,-2.05650379454001,-2.11214062736886,-1.86860942508481,-1.53652594386552,-1.53603207237647,-1.30550341967857],"text":["Date: 2021-07-31<br />gi_star: -1.243502","Date: 2021-08-31<br />gi_star: -1.801131","Date: 2021-09-30<br />gi_star: -2.842000","Date: 2021-10-31<br />gi_star: -3.167540","Date: 2021-11-30<br />gi_star: -3.231932","Date: 2021-12-31<br />gi_star: -2.787019","Date: 2022-01-31<br />gi_star: -2.056504","Date: 2022-02-27<br />gi_star: -2.112141","Date: 2022-03-31<br />gi_star: -1.868609","Date: 2022-04-30<br />gi_star: -1.536526","Date: 2022-05-31<br />gi_star: -1.536032","Date: 2022-06-30<br />gi_star: -1.305503"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.2283105022831,"r":7.30593607305936,"b":40.1826484018265,"l":48.9497716894977},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[18822.3,19189.7],"tickmode":"array","ticktext":["Okt 2021","Jan 2022","Apr 2022","Jul 2022"],"tickvals":[18901,18993,19083,19174],"categoryorder":"array","categoryarray":["Okt 2021","Jan 2022","Apr 2022","Jul 2022"],"nticks":null,"ticks":"outside","tickcolor":"rgba(179,179,179,1)","ticklen":3.65296803652968,"tickwidth":0.33208800332088,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(222,222,222,1)","gridwidth":0.33208800332088,"zeroline":false,"anchor":"y","title":{"text":"Date","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-3.33135340993866,-1.14408004553305],"tickmode":"array","ticktext":["-3.0","-2.5","-2.0","-1.5"],"tickvals":[-3,-2.5,-2,-1.5],"categoryorder":"array","categoryarray":["-3.0","-2.5","-2.0","-1.5"],"nticks":null,"ticks":"outside","tickcolor":"rgba(179,179,179,1)","ticklen":3.65296803652968,"tickwidth":0.33208800332088,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(222,222,222,1)","gridwidth":0.33208800332088,"zeroline":false,"anchor":"x","title":{"text":"gi_star","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(179,179,179,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"3ecc5a753ab6":{"x":{},"y":{},"type":"scatter"}},"cur_data":"3ecc5a753ab6","visdat":{"3ecc5a753ab6":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-fdbfe9833c4ce312bf50">{"x":{"data":[{"x":[18839,18870,18900,18931,18961,18992,19023,19050,19082,19112,19143,19173],"y":[-1.09595063005766,-1.84297465986314,-2.82663359790067,-3.2175568831521,-3.42259794480847,-2.87739961322928,-1.99247626533083,-1.96348204904234,-1.8278693208052,-1.59892105141441,-1.59097555336856,-1.46308271428613],"text":["Date: 2021-07-31<br />gi_star: -1.095951","Date: 2021-08-31<br />gi_star: -1.842975","Date: 2021-09-30<br />gi_star: -2.826634","Date: 2021-10-31<br />gi_star: -3.217557","Date: 2021-11-30<br />gi_star: -3.422598","Date: 2021-12-31<br />gi_star: -2.877400","Date: 2022-01-31<br />gi_star: -1.992476","Date: 2022-02-27<br />gi_star: -1.963482","Date: 2022-03-31<br />gi_star: -1.827869","Date: 2022-04-30<br />gi_star: -1.598921","Date: 2022-05-31<br />gi_star: -1.590976","Date: 2022-06-30<br />gi_star: -1.463083"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.2283105022831,"r":7.30593607305936,"b":40.1826484018265,"l":48.9497716894977},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[18822.3,19189.7],"tickmode":"array","ticktext":["Okt 2021","Jan 2022","Apr 2022","Jul 2022"],"tickvals":[18901,18993,19083,19174],"categoryorder":"array","categoryarray":["Okt 2021","Jan 2022","Apr 2022","Jul 2022"],"nticks":null,"ticks":"outside","tickcolor":"rgba(179,179,179,1)","ticklen":3.65296803652968,"tickwidth":0.33208800332088,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(222,222,222,1)","gridwidth":0.33208800332088,"zeroline":false,"anchor":"y","title":{"text":"Date","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-3.53893031054601,-0.979618264320118],"tickmode":"array","ticktext":["-3.5","-3.0","-2.5","-2.0","-1.5","-1.0"],"tickvals":[-3.5,-3,-2.5,-2,-1.5,-1],"categoryorder":"array","categoryarray":["-3.5","-3.0","-2.5","-2.0","-1.5","-1.0"],"nticks":null,"ticks":"outside","tickcolor":"rgba(179,179,179,1)","ticklen":3.65296803652968,"tickwidth":0.33208800332088,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(222,222,222,1)","gridwidth":0.33208800332088,"zeroline":false,"anchor":"x","title":{"text":"gi_star","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(179,179,179,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"30c8733f3bb1":{"x":{},"y":{},"type":"scatter"}},"cur_data":"30c8733f3bb1","visdat":{"30c8733f3bb1":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div class="cell">
@@ -1818,7 +1799,7 @@ First 10 features:
 <pre><code># A tibble: 1 x 5
     tau    sl     S     D  varS
   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-1 0.333 0.150    22  66.0  213.</code></pre>
+1 0.364 0.115    24  66.0  213.</code></pre>
 </div>
 </div>
 <p>The p-value is 0.149 which is &gt; 0.05 hence p-value is not significant. Initially, the line chart is a downtrend but from January 2022 onward it begins its upward trend but it is still insignificant.</p>
@@ -1842,7 +1823,7 @@ First 10 features:
 <span id="cb128-7"><a href="#cb128-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-e65ebd2ad886c081149d" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-e65ebd2ad886c081149d">{"x":{"data":[{"x":[18839,18870,18900,18931,18961,18992,19023,19050,19082,19112,19143,19173],"y":[-1.72102144949443,-2.74085583302844,-1.84309037533097,-1.83585420194247,-1.38907486246576,-1.17703181341232,-1.38157885923133,-1.36132330640087,-1.05655750372633,-1.09182522804424,-1.20650927360435,-1.12402250320392],"text":["Date: 2021-07-31<br />gi_star: -1.721021","Date: 2021-08-31<br />gi_star: -2.740856","Date: 2021-09-30<br />gi_star: -1.843090","Date: 2021-10-31<br />gi_star: -1.835854","Date: 2021-11-30<br />gi_star: -1.389075","Date: 2021-12-31<br />gi_star: -1.177032","Date: 2022-01-31<br />gi_star: -1.381579","Date: 2022-02-27<br />gi_star: -1.361323","Date: 2022-03-31<br />gi_star: -1.056558","Date: 2022-04-30<br />gi_star: -1.091825","Date: 2022-05-31<br />gi_star: -1.206509","Date: 2022-06-30<br />gi_star: -1.124023"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.2283105022831,"r":7.30593607305936,"b":40.1826484018265,"l":48.9497716894977},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[18822.3,19189.7],"tickmode":"array","ticktext":["Okt 2021","Jan 2022","Apr 2022","Jul 2022"],"tickvals":[18901,18993,19083,19174],"categoryorder":"array","categoryarray":["Okt 2021","Jan 2022","Apr 2022","Jul 2022"],"nticks":null,"ticks":"outside","tickcolor":"rgba(179,179,179,1)","ticklen":3.65296803652968,"tickwidth":0.33208800332088,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(222,222,222,1)","gridwidth":0.33208800332088,"zeroline":false,"anchor":"y","title":{"text":"Date","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-2.82507074949354,-0.972342587261228],"tickmode":"array","ticktext":["-2.5","-2.0","-1.5","-1.0"],"tickvals":[-2.5,-2,-1.5,-1],"categoryorder":"array","categoryarray":["-2.5","-2.0","-1.5","-1.0"],"nticks":null,"ticks":"outside","tickcolor":"rgba(179,179,179,1)","ticklen":3.65296803652968,"tickwidth":0.33208800332088,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(222,222,222,1)","gridwidth":0.33208800332088,"zeroline":false,"anchor":"x","title":{"text":"gi_star","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(179,179,179,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"3ecc60665df":{"x":{},"y":{},"type":"scatter"}},"cur_data":"3ecc60665df","visdat":{"3ecc60665df":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-e65ebd2ad886c081149d">{"x":{"data":[{"x":[18839,18870,18900,18931,18961,18992,19023,19050,19082,19112,19143,19173],"y":[-1.68389938556597,-2.61179981697234,-1.84434664552483,-1.67208987904681,-1.40662047826406,-1.38123836818601,-1.19546996860571,-1.11667673117821,-1.10412016823132,-1.12751538140155,-1.08797366099268,-1.09137287056657],"text":["Date: 2021-07-31<br />gi_star: -1.683899","Date: 2021-08-31<br />gi_star: -2.611800","Date: 2021-09-30<br />gi_star: -1.844347","Date: 2021-10-31<br />gi_star: -1.672090","Date: 2021-11-30<br />gi_star: -1.406620","Date: 2021-12-31<br />gi_star: -1.381238","Date: 2022-01-31<br />gi_star: -1.195470","Date: 2022-02-27<br />gi_star: -1.116677","Date: 2022-03-31<br />gi_star: -1.104120","Date: 2022-04-30<br />gi_star: -1.127515","Date: 2022-05-31<br />gi_star: -1.087974","Date: 2022-06-30<br />gi_star: -1.091373"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.2283105022831,"r":7.30593607305936,"b":40.1826484018265,"l":48.9497716894977},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[18822.3,19189.7],"tickmode":"array","ticktext":["Okt 2021","Jan 2022","Apr 2022","Jul 2022"],"tickvals":[18901,18993,19083,19174],"categoryorder":"array","categoryarray":["Okt 2021","Jan 2022","Apr 2022","Jul 2022"],"nticks":null,"ticks":"outside","tickcolor":"rgba(179,179,179,1)","ticklen":3.65296803652968,"tickwidth":0.33208800332088,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(222,222,222,1)","gridwidth":0.33208800332088,"zeroline":false,"anchor":"y","title":{"text":"Date","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-2.68799112477132,-1.0117823531937],"tickmode":"array","ticktext":["-2.5","-2.0","-1.5"],"tickvals":[-2.5,-2,-1.5],"categoryorder":"array","categoryarray":["-2.5","-2.0","-1.5"],"nticks":null,"ticks":"outside","tickcolor":"rgba(179,179,179,1)","ticklen":3.65296803652968,"tickwidth":0.33208800332088,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(222,222,222,1)","gridwidth":0.33208800332088,"zeroline":false,"anchor":"x","title":{"text":"gi_star","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(179,179,179,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"30c838517e37":{"x":{},"y":{},"type":"scatter"}},"cur_data":"30c838517e37","visdat":{"30c838517e37":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div class="cell">
@@ -1853,9 +1834,9 @@ First 10 features:
 <span id="cb129-5"><a href="#cb129-5" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">unnest_wider</span>(mk)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 x 5
-    tau      sl     S     D  varS
-  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-1 0.667 0.00319    44  66.0  213.</code></pre>
+    tau       sl     S     D  varS
+  &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 0.848 0.000162    56  66.0  213.</code></pre>
 </div>
 </div>
 <p>The p-value is 0.003 which is &lt; 0.05 hence p-value is significant. Therefore, this is an upward but significant trend.</p>
@@ -1880,18 +1861,18 @@ First 10 features:
 <span id="cb132-4"><a href="#cb132-4" aria-hidden="true" tabindex="-1"></a>emerging</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10 x 6
-   Sub_District             tau        sl     S     D  varS
-   &lt;chr&gt;                  &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
- 1 PETOJO UTARA          -0.970 0.0000156   -64  66.0  213.
- 2 KAYU MANIS             0.970 0.0000156    64  66.0  213.
- 3 JATINEGARA KAUM        0.939 0.0000287    62  66.0  213.
- 4 PISANGAN BARU          0.939 0.0000287    62  66.0  213.
- 5 PASAR BARU            -0.939 0.0000288   -62  66.0  213.
- 6 DUKUH                  0.909 0.0000521    60  66.0  213.
- 7 KAMAL MUARA           -0.909 0.0000521   -60  66.0  213.
- 8 KAPUK MUARA           -0.909 0.0000521   -60  66.0  213.
- 9 KEBON KELAPA          -0.909 0.0000521   -60  66.0  213.
-10 GUNUNG SAHARI SELATAN -0.879 0.0000928   -58  66.0  213.</code></pre>
+   Sub_District         tau         sl     S     D  varS
+   &lt;chr&gt;              &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1 KEMBANGAN UTARA   -1.00  0.00000830   -66  66.0  213.
+ 2 PASAR BARU        -1.00  0.00000830   -66  66.0  213.
+ 3 CIPINANG MUARA     1.00  0.00000834    66  66.0  213.
+ 4 KAMPUNG MELAYU     1.00  0.00000834    66  66.0  213.
+ 5 MANGGARAI          1.00  0.00000834    66  66.0  213.
+ 6 PISANGAN BARU      1.00  0.00000834    66  66.0  213.
+ 7 UTAN KAYU SELATAN  1.00  0.00000834    66  66.0  213.
+ 8 GAMBIR            -0.970 0.0000156    -64  66.0  213.
+ 9 KAMAL             -0.970 0.0000156    -64  66.0  213.
+10 KAMAL MUARA       -0.970 0.0000156    -64  66.0  213.</code></pre>
 </div>
 </div>
 <p>emerging_hotspot_analysis() of sfdep package will be used to perform EHSA analysis. It takes a spacetime object x (i.e.&nbsp;vaccination_rate_st), and the quoted name of the variable of interest (i.e.&nbsp;Vaccinaton Rate) for .var argument. The k argument is used to specify the number of time lags which is set to 1 by default.</p>

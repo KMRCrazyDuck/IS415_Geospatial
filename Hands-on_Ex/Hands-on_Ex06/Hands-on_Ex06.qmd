@@ -40,7 +40,7 @@ Two data sets will be used in this hands-on exercise, they are:
 Before we get started, we need to ensure that **spdep**, **sf**, **tmap** and **tidyverse** packages of R are currently installed in your R.
 
 ```{r}
-pacman::p_load(sf, spdep, tmap, tidyverse, knitr)
+pacman::p_load(sf, spdep, tmap, tidyverse, knitr, readr, dplyr)
 ```
 
 ## 8.3 Getting the Data Into R Environment
@@ -371,7 +371,7 @@ In this section, you will learn how to create four different spatial lagged vari
 
 ### 8.8.1 Spatial lag with row-standardized weights
 
-Finally, we’ll compute the average neighbor GDPPC value for each polygon. These values are often referred to as spatially lagged values.
+Finally, we'll compute the average neighbor GDPPC value for each polygon. These values are often referred to as spatially lagged values.
 
 ```{r}
 GDPPC.lag <- lag.listw(rswm_q, hunan$GDPPC)
@@ -463,13 +463,13 @@ wm_qs <- include.self(wm_q)
 
 Notice that the Number of nonzero links, Percentage nonzero weights and Average number of links are 536, 6.921488 and 6.090909 respectively as compared to wm_q of 448, 5.785124 and 5.090909
 
-Let us take a good look at the neighbour list of area [1] by using the code chunk below.
+Let us take a good look at the neighbour list of area \[1\] by using the code chunk below.
 
 ```{r}
 wm_qs[[1]]
 ```
 
-Notice that now [1] has six neighbours instead of five.
+Notice that now \[1\] has six neighbours instead of five.
 
 Now we obtain weights with nb2listw()
 
@@ -539,7 +539,7 @@ b_weights <- lapply(wm_qs, function(x) 0*x + 1)
 b_weights[1]
 ```
 
-Notice that now [1] has six neighbours instead of five.
+Notice that now \[1\] has six neighbours instead of five.
 
 Again, we use nb2listw() and glist() to explicitly assign weight values.
 

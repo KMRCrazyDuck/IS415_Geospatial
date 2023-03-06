@@ -74,7 +74,7 @@ The code chunk below is used to perform the following tasks:
 -   launching the packages into R environment.
 
 ```{r}
-pacman::p_load(sf, spdep, tmap, tidyverse)
+pacman::p_load(sf, spdep, tmap, tidyverse, readr, dplyr)
 ```
 
 ## 9.3 Getting the Data Into R Environment

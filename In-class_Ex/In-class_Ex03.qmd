@@ -53,10 +53,10 @@ pacman::p_load(sf, tidyverse, tmap)
 
 ## **2.2 Importing Data**
 
-We want to import the sf dataframe we have cleaned and prepared earlier in in class exercise 02.
+We want to import the sf dataframe we have cleaned and prepared earlier in class exercise 02.
 
 ```{r}
-NGA_wp <- read_rds("Data/rds/nigeria_wp.rds")
+NGA_wp <- read_rds("data/rds/nigeria_wp.rds")
 ```
 
 ## **2.3 Visualising Distribution of Non-Functional Water Points**
