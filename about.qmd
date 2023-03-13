@@ -1,9 +1,1 @@
----
-title: "About"
----
-
-About this site
-
-```{r}
-1 + 1
-```
+Welcome to Ming Rong's IS415 Geospatial Analytics and Application

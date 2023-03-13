@@ -1,0 +1,106 @@
+---
+title: "In Class Exericse 9"
+author: "Kwek Ming Rong"
+date: "13 March 2023"
+date-modified: "`r Sys.Date()`"
+format: html
+execute:
+  eval: true
+  echo: true
+  warning: false
+editor: visual
+---
+
+```{r}
+pacman::p_load(sf, spdep, GWmodel, SpatialML, tidyverse, tmap, ggpubr, olsrr, devtools,
+              tidymodels, rsample)
+```
+
+## Preparing Data
+
+### Reading data file to rds
+
+```{r}
+mdata <- read_rds("Data/Aspatial/mdata.rds")
+```
+
+### Data Sampling
+
+```{r}
+set.seed(1234)
+resale_split <- initial_split(mdata,prop = 6.5/10,)
+train_data <- training(resale_split)
+test_data <- testing(resale_split)
+```
+
+```{r}
+write_rds(train_data, "Data/rds/train_data.rds")
+write_rds(train_data, "Data/rds/test_data.rds")
+```
+
+## Building a non-spatial multiple linear regression
+
+```{r}
+price_mlr <- lm(resale_price ~ floor_area_sqm +
+                  storey_order + remaining_lease_mths +
+                  PROX_CBD + PROX_ELDERLYCARE + PROX_HAWKER +
+                  PROX_MRT + PROX_PARK + PROX_MALL + 
+                  PROX_SUPERMARKET + WITHIN_350M_KINDERGARTEN +
+                  WITHIN_350M_CHILDCARE + WITHIN_350M_BUS +
+                  WITHIN_1KM_PRISCH,
+                data=train_data)
+
+summary(price_mlr)
+```
+
+```{r}
+write_rds(price_mlr, "Data/rds/price_mlr.rds")
+```
+
+## GWR
+
+```{r}
+train_data_sp <- as_Spatial(train_data)
+train_data_sp
+```
+
+## Preparing Coordinate Data
+
+### Extracting Coordinates Data
+
+```{r}
+coords <- st_coordinates(mdata)
+coords_train <- st_coordinates(train_data)
+coords_test <- st_coordinates(test_data)
+```
+
+```{r}
+coords_train <- write_rds(coords_train, "Data/rds/coords_train.rds")
+coords_test <- write_rds(coords_test, "Data/rds/coords_test.rds")
+```
+
+
+### Dropping the geometry field
+
+```{r}
+train_data <- train_data %>%
+  st_drop_geometry()
+```
+
+## Calibrating Random Forest 
+
+```{r}
+set.seed(1234)
+rf <- ranger(resale_price ~ floor_area_sqm +
+                  storey_order + remaining_lease_mths +
+                  PROX_CBD + PROX_ELDERLYCARE + PROX_HAWKER +
+                  PROX_MRT + PROX_PARK + PROX_MALL + 
+                  PROX_SUPERMARKET + WITHIN_350M_KINDERGARTEN +
+                  WITHIN_350M_CHILDCARE + WITHIN_350M_BUS +
+                  WITHIN_1KM_PRISCH,
+                data=train_data)
+```
+
+```{r}
+print(rf)
+```
