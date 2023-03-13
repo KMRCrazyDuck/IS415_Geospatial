@@ -84,7 +84,7 @@ packages <- c('sf', 'tidyverse', 'tmap', 'httr', 'jsonlite', 'rvest',
 
 for(p in packages){
   if(!require(p, character.only = T)){
-    install.packages(p)
+    install.packages(p, repos = "http://cran.us.r-project.org")
   }
   library(p, character.only = T)
 }
@@ -111,7 +111,7 @@ More on the packages used:
 
     -   **ggplot2** for visualising data
 
--   **tmap:** provides functions for plotting cartographic quality *static* point patterns maps or *interactive* maps by using leaflet API.
+-   **tmap:** provides functions for plotting cartographic quality *static* inpoint patterns maps or *interactive* maps by using leaflet API.
 
 -   **httr:** Useful tools for working with HTTP organised by HTTP verbs (GET(), POST(), etc). Configuration functions make it easy to control additional request components (authenticate(), add_headers() and so on).
 
@@ -528,4 +528,161 @@ rs_coords_sf <- get_within(rs_coords_sf, childcare_sf, 350, "WITHIN_350M_CHILDCA
 rs_coords_sf <- get_within(rs_coords_sf, bus_sf, 350, "WITHIN_350M_BUS")
 ```
 
-## continue
+## 4.2 Location factors without coordinates
+
+### 4.2.1 CBD Town Area
+
+Central Business District is an area where majority of the citizens travel to daily for work. Therefore it is an important measure. With a quick google search, the latitude and longitude of Downtown Core also known as CBD, are 1.287953 and 103.851784 respectively.
+
+```{r}
+# Store CBD Coordinates in Dataframe
+name <- c('CBD Area')
+latitude= c(1.287953)
+longitude= c(103.851784)
+cbd_coords <- data.frame(name, latitude, longitude)
+```
+
+Conversion of data frame into sf object and perform transformation of crs
+
+```{r}
+cbd_coords_sf <- st_as_sf(cbd_coords,
+                    coords = c("longitude", 
+                               "latitude"),
+                    crs=4326) %>%
+  st_transform(crs = 3414)
+
+st_crs(cbd_coords_sf)
+```
+
+get_prox function will be called to get the proximity between the HDB resale flats and CBD area
+
+```{r}
+rs_coords_sf <- get_prox(rs_coords_sf, cbd_coords_sf, "PROX_CBD")
+```
+
+### 4.2.2 Shopping Malls Places
+
+There are multiple lists of shopping malls classified by the regions in Singapore, we are able to check the XPaths of the various lists on the wikipedia page. 
+
+```{r}
+url <- "https://en.wikipedia.org/wiki/List_of_shopping_malls_in_Singapore"
+malls_list <- list()
+
+for (i in 1:7){
+  malls <- read_html(url) %>%
+    html_nodes(xpath = paste('//*[@id="mw-content-text"]/div[1]/div[',as.character(i),']/ul/li',sep="") ) %>%
+    html_text()
+  malls_list <- append(malls_list, malls)
+}
+
+malls_list
+```
+
+From the malls_list result, there are 164 shopping malls. As these malls does not have their coordinates, we need to use the get_coords function created previously to search the names of these shopping malls.
+
+```{r}
+malls_list_coords <- get_coords(malls_list) %>% 
+  rename("mall_name" = "address")
+```
+
+```{r}
+malls_list_coords <- subset(malls_list_coords, mall_name!= "Yew Tee Shopping Centre")
+```
+
+We need to correct the mall names that are no longer relevant and also malls with an index beside it due to Wikipedia page numbering as shown above output
+
+```{r}
+invalid_malls<- subset(malls_list_coords, is.na(malls_list_coords$postal))
+invalid_malls_list <- unique(invalid_malls$mall_name)
+corrected_malls <- c("Clarke Quay", "City Gate", "Raffles Holland V", "Knightsbridge", "Mustafa Centre", "GR.ID", "Shaw House",
+                     "The Poiz Centre", "Velocity @ Novena Square", "Singapore Post Centre", "PLQ Mall", "KINEX", "The Grandstand")
+
+for (i in 1:length(invalid_malls_list)) {
+  malls_list_coords <- malls_list_coords %>% 
+    mutate(mall_name = ifelse(as.character(mall_name) == invalid_malls_list[i], corrected_malls[i], as.character(mall_name)))
+}
+```
+
+```{r}
+malls_list <- sort(unique(malls_list_coords$mall_name))
+```
+
+```{r}
+malls_coords <- get_coords(malls_list)
+```
+
+To check if the malls still have any NA values
+
+```{r}
+malls_coords[(is.na(malls_coords$postal) | is.na(malls_coords$latitude) | is.na(malls_coords$longitude)), ]
+```
+
+To convert the mall dataframe into SF object and perform transformation of CRS
+
+```{r}
+malls_sf <- st_as_sf(malls_coords,
+                    coords = c("longitude", 
+                               "latitude"),
+                    crs=4326) %>%
+  st_transform(crs = 3414)
+```
+
+get_prox function will be called to get the proximity between the HDB resale flats and Shopping Malls
+
+```{r}
+rs_coords_sf <- get_prox(rs_coords_sf, malls_sf, "PROX_MALL") 
+```
+
+### 4.2.3 Primary Schools
+
+To extract and retrieve only primary schools data
+
+```{r}
+pri_sch <- read_csv("Data/Aspatial/general-information-of-schools.csv")
+
+pri_sch <- pri_sch %>%
+  filter(mainlevel_code == "PRIMARY") %>%
+  select(school_name, address, postal_code, mainlevel_code)
+
+glimpse(pri_sch)
+```
+
+There are 183 Primary Schools in Singapore.
+
+To create a list to store postal code of the schools and retrieve the coordinates
+
+```{r}
+prisch_list <- sort(unique(pri_sch$postal_code))
+prisch_coords <- get_coords(prisch_list)
+```
+
+To check if the primary schools still have any NA values
+
+```{r}
+prisch_coords[(is.na(prisch_coords$postal) | is.na(prisch_coords$latitude) | is.na(prisch_coords$longitude)), ]
+```
+
+To combine coordinates with the schools
+
+```{r}
+prisch_coords = prisch_coords[c("postal","latitude", "longitude")]
+pri_sch <- left_join(pri_sch, prisch_coords, by = c('postal_code' = 'postal'))
+```
+
+To convert primary schools dataframe into SF object and perform transformation of CRS
+
+```{r}
+prisch_sf <- st_as_sf(pri_sch,
+                    coords = c("longitude", 
+                               "latitude"),
+                    crs=4326) %>%
+  st_transform(crs = 3414)
+```
+
+To call get_within function to obtain schools within a proximity of 1km
+
+```{r}
+rs_coords_sf <- get_within(rs_coords_sf, prisch_sf, 1000, "WITHIN_1KM_PRISCH")
+```
+
+### 4.2.4 Proximity to Good Primary Schools
