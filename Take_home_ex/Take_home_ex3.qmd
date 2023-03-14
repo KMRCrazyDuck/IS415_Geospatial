@@ -575,7 +575,7 @@ for (i in 1:7){
   malls_list <- append(malls_list, malls)
 }
 
-malls_list
+#malls_list
 ```
 
 From the malls_list result, there are 164 shopping malls. As these malls does not have their coordinates, we need to use the get_coords function created previously to search the names of these shopping malls.
@@ -686,3 +686,42 @@ rs_coords_sf <- get_within(rs_coords_sf, prisch_sf, 1000, "WITHIN_1KM_PRISCH")
 ```
 
 ### 4.2.4 Proximity to Good Primary Schools
+
+To identify good primary schools in Singapore, one particular forum that we can use is www.salary.sg where it provides ranking of schools according to their popularity. Similarly, we can reuse the code that we extract the shopping malls in Singapore to extract the ranking of primary schools.
+
+```{r}
+url <- "https://www.salary.sg/2021/best-primary-schools-2021-by-popularity/"
+
+good_pri <- data.frame()
+
+schools <- read_html(url) %>%
+  html_nodes(xpath = paste('//*[@id="post-3068"]/div[3]/div/div/ol/li') ) %>%
+  html_text() 
+
+for (i in (schools)){
+  sch_name <- toupper(gsub(" – .*","",i))
+  sch_name <- gsub("\\(PRIMARY SECTION)","",sch_name)
+  sch_name <- trimws(sch_name)
+  new_row <- data.frame(pri_sch_name=sch_name)
+  # Add the row
+  good_pri <- rbind(good_pri, new_row)
+}
+
+top_good_pri <- head(good_pri, 10)
+
+head(top_good_pri)
+```
+
+To check if the extracted top primary schools' name matches the existing names in the primary school dataframe
+
+```{r}
+top_good_pri$pri_sch_name[!top_good_pri$pri_sch_name %in% prisch_sf$school_name]
+```
+
+Replacing the names to match the primary school dataframe names
+
+```{r}
+top_good_pri$pri_sch_name[top_good_pri$pri_sch_name == "CHIJ ST. NICHOLAS GIRLS’ SCHOOL"] <- "CHIJ SAINT NICHOLAS GIRLS' SCHOOL"
+top_good_pri$pri_sch_name[top_good_pri$pri_sch_name == "ST. HILDA’S PRIMARY SCHOOL"] <- "SAINT HILDA'S PRIMARY SCHOOL"
+```
+
