@@ -161,14 +161,14 @@ When we load in the dataset for the first time, we can see that:
 
 The dataset contains 11 columns with 148,373 rows. The columns that are present in the data are: month, town, flat_type, block, street_name, storey_range, floor_area_sqm, flat_model, lease_commence_date, remaining_lease, resale_price.
 
-For this take home exercise 3, we are allowed the option to choose to perform our analysis between either 3, 4 or 5 room flat transactions. Therefore, I will be selecting the 4 room flat transactions during the transaction period from 1st January 2021 to 31st December 2022. Test data should be included for January and February 2023 resale prices.
+For this take home exercise 3, we are allowed the option to choose to perform our analysis between either 3, 4 or 5 room flat transactions. Therefore, I will be selecting the 3 room flat transactions during the transaction period from 1st January 2021 to 31st December 2022. Test data should be included for January and February 2023 resale prices.
 
 ## 3.1 Filtering HDB Resale Data
 
 filter() function of dplyr package will be used to select the desired flat_type and dates which will be stored in rs_subset.
 
 ```{r}
-rs_subset <-  filter(resale,flat_type == "4 ROOM") %>% 
+rs_subset <-  filter(resale,flat_type == "3 ROOM") %>% 
               filter(month >= "2021-01" & month <= "2023-02")
 ```
 
@@ -182,13 +182,13 @@ unique(rs_subset$month)
 unique(rs_subset$flat_type)
 ```
 
-glimpse() function will be used to view the overall resale transactions available for 4 room flat in Singapore.
+glimpse() function will be used to view the overall resale transactions available for 3 room flat in Singapore.
 
 ```{r}
 glimpse(rs_subset)
 ```
 
-From the glimpse() function result, we can see that from Jan 2021 to December 2022, there are 23,656 transactions for 4 room flat in Singapore.
+From the glimpse() function result, we can see that from Jan 2021 to December 2022, there are 23,656 transactions for 3 room flat in Singapore.
 
 ## 3.2 Transforming HDB Resale Data Columns
 
@@ -771,23 +771,18 @@ get_prox function will be called to get the proximity between the HDB resale fla
 rs_coords_sf <- get_prox(rs_coords_sf, goodpri_sf, "PROX_GOOD_PRISCH")
 ```
 
-## 4.3 Splitting of training and testing dataset
+## 4.3 Filtering dataset
 
 ```{r}
-rs_coords_sf_training <-  filter(rs_coords_sf ,flat_type == "4 ROOM") %>% 
-              filter(month >= "2021-01" & month <= "2022-12")
+rs_coords_sf_training <-  filter(rs_coords_sf ,flat_type == "3 ROOM") %>% 
+              filter(month >= "2021-01" & month <= "2023-02")
 ```
 
-```{r}
-rs_coords_sf_testing <-  filter(rs_coords_sf ,flat_type == "4 ROOM") %>% 
-              filter(month >= "2023-01" & month <= "2023-02")
-```
 
 ### 4.3.1 Writing to RDS file
 
 ```{r}
 rs_factors_rds_training <- write_rds(rs_coords_sf_training, "Data/rds/rs_factors_training.rds")
-rs_factors_rds_testing <- write_rds(rs_coords_sf_testing, "Data/rds/rs_factors_testing.rds")
 ```
 
 # 5. Import Data for Analysis
@@ -822,7 +817,6 @@ Now the geometry is valid.
 
 ```{r}
 rs_factors_training <- read_rds("Data/rds/rs_factors_training.rds")
-rs_factors_testing <- read_rds("Data/rds/rs_factors_testing.rds")
 ```
 
 ## 5.3 Extract storey_order due to character type
@@ -835,7 +829,6 @@ storey_range_order <- data.frame(storeys, storey_order)
 
 # Combine storey_order with resale dataframe for training and testing data
 rs_factors_training <- left_join(rs_factors_training, storey_range_order, by= c("storey_range" = "storeys"))
-rs_factors_testing <- left_join(rs_factors_testing, storey_range_order, by= c("storey_range" = "storeys"))
 ```
 
 ## 5.4 Selecting required columns for analysis
@@ -845,16 +838,11 @@ rs_factors_training <- rs_factors_training %>%
   select(resale_price, floor_area_sqm, storey_order, remaining_lease_mths,
          PROX_CBD, PROX_ELDERLYCARE, PROX_HAWKER, PROX_MRT, PROX_PARK, PROX_GOOD_PRISCH, PROX_MALL, PROX_CHAS,
          PROX_SUPERMARKET, WITHIN_350M_KINDERGARTEN, WITHIN_350M_CHILDCARE, WITHIN_350M_BUS, WITHIN_1KM_PRISCH)
-
-rs_factors_testing <- rs_factors_testing %>%
-  select(resale_price, floor_area_sqm, storey_order, remaining_lease_mths,
-         PROX_CBD, PROX_ELDERLYCARE, PROX_HAWKER, PROX_MRT, PROX_PARK, PROX_GOOD_PRISCH, PROX_MALL, PROX_CHAS,
-         PROX_SUPERMARKET, WITHIN_350M_KINDERGARTEN, WITHIN_350M_CHILDCARE, WITHIN_350M_BUS, WITHIN_1KM_PRISCH)
 ```
 
 # 6. Exploratory Data Analysis
 
-## 6.1 HDB 4 room resale prices in Histogram
+## 6.1 HDB 3 room resale prices in Histogram
 
 ```{r}
 ggplot(data=rs_factors_training, aes(x=`resale_price`)) +
@@ -863,7 +851,7 @@ ggplot(data=rs_factors_training, aes(x=`resale_price`)) +
 
 The results shown above reveals a right skewed distribution. This means that more resale HDB units were transacted at relative lower prices about \$500,000 majority. Statistically, the skewed distribution can be normalised by using log transformation which we will be doing in the next section.
 
-## 6.2 Normalise using Log Transformation of HDB 4 room resale prices in Histogram
+## 6.2 Normalise using Log Transformation of HDB 3 room resale prices in Histogram
 
 A new variable called LOG_RESALE_PRICE by using a log transformation on the variable resale_price
 
@@ -964,7 +952,7 @@ tm_basemap("OpenStreetMap")
 tmap_mode("plot")
 ```
 
-From the interactive map, we can see that 4 room resale HDBs around the South and Central tend to have higher resale prices which is indicated by the darker orange points. This is in comparison to the lighter yellow points concentrated around the North and East area.
+From the interactive map, we can see that 3 room resale HDBs around the South and Central tend to have higher resale prices which is indicated by the darker orange points. This is in comparison to the lighter yellow points concentrated around the North and East area.
 
 # 7. Data Sampling of Training and Testing Data
 
@@ -972,10 +960,8 @@ The entire data are split into training and test data sets with 2021-01 to 2022-
 
 ```{r}
 set.seed(1234)
-# Training Data a total of 26 months, 24 months training, 2 months testing
-# 2/26 will be 0.0769, 10 - 0.077 = 9.22
-resale_split <- initial_split(rs_coords_sf, 
-                              prop = 9.22/10,)
+resale_split <- initial_split(rs_coords_sf[,8:26], 
+                              prop = 9/10,)
 
 train_data <- training(resale_split)
 test_data <- testing(resale_split)
@@ -1041,7 +1027,7 @@ bw_adaptive <- bw.gwr(resale_price ~ floor_area_sqm +
                   longlat=FALSE)
 ```
 
-The result shows that 114 neighbour points will be the optimal bandwidth to be used if adaptive bandwidth is used for this data set.
+The result shows that 110 neighbour points will be the optimal bandwidth to be used if adaptive bandwidth is used for this data set.
 
 Constructing the adaptive bandwidth GWR model
 
@@ -1107,7 +1093,7 @@ In this section, calibration of a model to predict HDB resale price will be done
 
 ### 7.6.1 Calibrating using training data.
 
-The code chunk below calibrate a geographic ranform forest model by using grf() of SpatialML package.
+The code chunk below calibrate a geographic random forest model by using grf() of SpatialML package.
 
 ```{r}
 set.seed(1234)
@@ -1118,9 +1104,14 @@ gwRF_adaptive <- grf(formula = resale_price ~ floor_area_sqm +
                        WITHIN_350M_CHILDCARE + WITHIN_350M_BUS +
                        WITHIN_1KM_PRISCH,
                      dframe=train_data, 
-                     bw=55,
+                     bw=10,
                      kernel="adaptive",
                      coords=coords_train)
+```
+
+```{r}
+write_rds(gwRF_adaptive, "Data/rds/gwRF_adaptive.rds")
+gwRF_adaptive <- read_rds("Data/rds/gwRF_adaptive.rds")
 ```
 
 ### 7.6.2 Predicting using Test Data
