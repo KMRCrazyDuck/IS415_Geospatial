@@ -2,7 +2,7 @@
 title: "Take Home Exercise 3: Predicting HDB Public Housing Resale Pricies using Geographically Weighted Methods"
 author: "Kwek Ming Rong"
 date: "09 March 2023"
-date-modified: "18 March 2023"
+date-modified: "20 March 2023"
 format: html
 execute:
   eval: true
@@ -778,7 +778,6 @@ rs_coords_sf_training <-  filter(rs_coords_sf ,flat_type == "3 ROOM") %>%
               filter(month >= "2021-01" & month <= "2023-02")
 ```
 
-
 ### 4.3.1 Writing to RDS file
 
 ```{r}
@@ -900,7 +899,7 @@ ggarrange(plotlist = s_factor_hist_list,
           nrow = 2)
 ```
 
-From the histogram results, only floor_area_sqm seem to resemble a normal distribution. The histogram of storey_order is skewed towards the right which means that the resale HDBs in this period and flat_type are generally on the lower levels. For the remaining_lease_mths, there are a few pattern found of popular transactions involving \~ 800 months, \~ 900 months and \~ 1100 months. This shows that more transactions are done on resale flats that have minimum 66 years lease remaining.
+From the histogram results, only floor_area_sqm seem to resemble a normal distribution. The histogram of storey_order is skewed towards the right which means that the resale HDBs in this period and flat_type are generally on the lower levels. For the remaining_lease_mths, there are a few pattern found of popular transactions involving \~ 600 to 800 months and \~ 1100 months. This shows that more transactions are done on resale flats that have minimum 66 years lease remaining.
 
 ## 6.4 Various histogram of location variables
 
@@ -934,7 +933,7 @@ ggarrange(plotlist = l_factor_hist_list,
           nrow = 5)
 ```
 
-PROX_GOOD_PRISCH have some patterns involved whereby there more transactions happening within the proximity of approximately 3km and 6km. PROX_CBD have a left skewed distribution, this shows majority of the transactions HDB resale flats are away from CBD.
+PROX_GOOD_PRISCH have some patterns involved whereby there more transactions happening within the proximity of approximately 3km. PROX_CBD resemble somewhat a normal distribution.
 
 Other variables like PROX_SUPERMARKET, PROX_HAWKER, PROX_MRT, PROX_MALL, PROX_CHAS, WITHIN_350M_KINDERGARTEN, WITHIN_350M_CHILDCARE is skewed towards the right. This shows that there are more resale transactions involved and residents prefer to stay near resale flats with these amenities.
 
@@ -952,16 +951,20 @@ tm_basemap("OpenStreetMap")
 tmap_mode("plot")
 ```
 
-From the interactive map, we can see that 3 room resale HDBs around the South and Central tend to have higher resale prices which is indicated by the darker orange points. This is in comparison to the lighter yellow points concentrated around the North and East area.
+From the interactive map, we can see that 3 room resale HDBs around the North-East, South and Central tend to have higher resale prices which is indicated by the darker orange points. This is in comparison to the lighter yellow points concentrated around the North and East area.
 
 # 7. Data Sampling of Training and Testing Data
 
 The entire data are split into training and test data sets with 2021-01 to 2022-12 being the training set and 2023-01 to 2023-02 being the testing set. This can be done by using initial_split() of rsample package. Rsample is one of the package of tidymodels.
 
+Due to time constraint, 6 months (2022-07 to 2022-12) of dataset will be used to perform the training instead.s
+
 ```{r}
 set.seed(1234)
+rs_coords_sf <-  filter(rs_factors_rds_training,flat_type == "3 ROOM") %>% 
+              filter(month >= "2022-07" & month <= "2023-02")
 resale_split <- initial_split(rs_coords_sf[,8:26], 
-                              prop = 9/10,)
+                              prop = 7.5/10,)
 
 train_data <- training(resale_split)
 test_data <- testing(resale_split)
@@ -981,7 +984,7 @@ corrplot::corrplot(cor(rs_coords_sf_nogeo[, 14:26]),
                    type = "upper")
 ```
 
-The correlation matrix above shows that all the correlation values are below 0.8 with the exception of WITHIN_350M_CHILDCARE that has a value of 0.94. This shows that WITHIN_350M_CHILDCARE has a sign of multicolinearity with WTIHIN_350M_KINDERGARTEN
+The correlation matrix above shows that all the correlation values are below 0.8 with the exception of WITHIN_350M_CHILDCARE that has a value of 0.92. This shows that WITHIN_350M_CHILDCARE has a sign of multicolinearity with WTIHIN_350M_KINDERGARTEN
 
 ## 7.2 Building a non-spatial multiple linear regression
 
@@ -1027,7 +1030,7 @@ bw_adaptive <- bw.gwr(resale_price ~ floor_area_sqm +
                   longlat=FALSE)
 ```
 
-The result shows that 110 neighbour points will be the optimal bandwidth to be used if adaptive bandwidth is used for this data set.
+The result shows that 29 neighbour points will be the optimal bandwidth to be used if adaptive bandwidth is used for this data set.
 
 Constructing the adaptive bandwidth GWR model
 
@@ -1104,7 +1107,7 @@ gwRF_adaptive <- grf(formula = resale_price ~ floor_area_sqm +
                        WITHIN_350M_CHILDCARE + WITHIN_350M_BUS +
                        WITHIN_1KM_PRISCH,
                      dframe=train_data, 
-                     bw=10,
+                     bw=29,
                      kernel="adaptive",
                      coords=coords_train)
 ```
@@ -1142,6 +1145,7 @@ Before moving on, let us save the output into rds file for future use.
 
 ```{r}
 GRF_pred <- write_rds(gwRF_pred, "Data/rds/GRF_pred.rds")
+GRF_pred
 ```
 
 Converting the predicting output into a data frame
