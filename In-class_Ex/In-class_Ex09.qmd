@@ -5,7 +5,7 @@ date: "13 March 2023"
 date-modified: "`r Sys.Date()`"
 format: html
 execute:
-  eval: true
+  eval: false
   echo: true
   warning: false
 editor: visual
@@ -79,7 +79,6 @@ coords_train <- write_rds(coords_train, "Data/rds/coords_train.rds")
 coords_test <- write_rds(coords_test, "Data/rds/coords_test.rds")
 ```
 
-
 ### Dropping the geometry field
 
 ```{r}
@@ -87,7 +86,7 @@ train_data <- train_data %>%
   st_drop_geometry()
 ```
 
-## Calibrating Random Forest 
+## Calibrating Random Forest
 
 ```{r}
 set.seed(1234)
@@ -118,4 +117,22 @@ gwRF_adaptive <- grf(resale_price ~ floor_area_sqm +
                 bw = 55,
                 kernel = "adaptive",
                 coords=coords_train)
+```
+
+```{r}
+test_data <- cbind(test_data, coords_test) %>%
+  st_drop_geometry()
+```
+
+```{r}
+gwRF_pred <- predict.grf(gwRF_adaptive,
+                         test_data,
+                         x.var.name="X",
+                         y.var.name="Y",
+                         local.w=1,
+                         global.w=0)
+```
+
+```{r}
+gwRF_pred_df <- as.data.frame(gwRF_pred)
 ```
