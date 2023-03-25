@@ -986,7 +986,7 @@ corrplot::corrplot(cor(rs_coords_sf_nogeo[, 14:26]),
 
 The correlation matrix above shows that all the correlation values are below 0.8 with the exception of WITHIN_350M_CHILDCARE that has a value of 0.92. This shows that WITHIN_350M_CHILDCARE has a sign of multicolinearity with WTIHIN_350M_KINDERGARTEN
 
-## 7.2 Building a non-spatial multiple linear regression
+## 7.2 Building the OLS Model using olsrr
 
 ```{r}
 price_mlr <- lm(resale_price ~ floor_area_sqm +
@@ -997,12 +997,32 @@ price_mlr <- lm(resale_price ~ floor_area_sqm +
                   WITHIN_350M_CHILDCARE + WITHIN_350M_BUS +
                   WITHIN_1KM_PRISCH,
                 data=train_data)
-summary(price_mlr)
+ols_regress(price_mlr)
+```
+Based on the results above, we can see that the P-Value for all are not statistically significant, meaning that it’s p-value is more than or equal to 0.05. Therefore, we are unable to statistically conclude that the predictor is significant in contributing towards the model.
+
+## 7.3 Testing Linear Regression 
+
+### 7.3.1 Multicolinearity
+
+```{r}
+
+ols_vif_tol(price_mlr)
+
+```
+### 7.3.2 Non-Linearity 
+
+```{r}
+ols_plot_resid_fit(price_mlr)
+```
+### 7.3.3 Normality
+
+```{r}
+ols_plot_resid_hist(price_mlr)
 ```
 
-The building of a non-spatial multiple linear regression adjusted R square value of 0.6857 depicts that the resale prices are accurate as of the 6 months training data. Upon research adjusted R square value of 0.5 to 0.74 is a good value whereas 0.75 and above is a very good value. 
 
-## 7.3 Geographically Weighted Regression Predictive Method
+## 7.4 Geographically Weighted Regression Predictive Method
 
 Calibrating a model to predict HDB resale price by using geographically weighted regression method of GWmodel package.
 
@@ -1054,7 +1074,7 @@ gwr_adaptive <- gwr.basic(formula = resale_price ~
 gwr_adaptive
 ```
 
-## 7.4 Preparing Coordinates Data
+## 7.5 Preparing Coordinates Data
 
 The code chunk below extract the x,y coordinates of the full, training and test data sets.
 
@@ -1073,7 +1093,7 @@ train_data <- train_data %>%
   st_drop_geometry()
 ```
 
-## 7.5 Calibrating Random Forest Model
+## 7.6 Calibrating Random Forest Model
 
 In this section, calibration of a model to predict HDB resale price will be done by using random forest function of ranger package.
 
@@ -1092,11 +1112,11 @@ rf <- ranger(resale_price ~ floor_area_sqm +
 print(rf)
 ```
 
-## 7.6 Calibrating Geographical Random Forest Model
+## 7.7 Calibrating Geographical Random Forest Model
 
 In this section, calibration of a model to predict HDB resale price will be done by using grf() of SpatialML package.
 
-### 7.6.1 Calibrating using training data.
+### 7.7.1 Calibrating using training data.
 
 The code chunk below calibrate a geographic random forest model by using grf() of SpatialML package.
 
@@ -1119,7 +1139,7 @@ write_rds(gwRF_adaptive, "Data/rds/gwRF_adaptive.rds")
 gwRF_adaptive <- read_rds("Data/rds/gwRF_adaptive.rds")
 ```
 
-### 7.6.2 Predicting using Test Data
+### 7.7.2 Predicting using Test Data
 
 The code chunk below will be used to combine the test data with its corresponding coordinates data.
 
@@ -1169,7 +1189,7 @@ test_data_p <- cbind(test_data, GRF_pred_df)
 write_rds(test_data_p, "Data/rds/test_data_p.rds")
 ```
 
-### 7.6.3 Calculating Root Mean Square Error
+### 7.7.3 Calculating Root Mean Square Error
 
 The root mean square error (RMSE) allows us to measure how far predicted values are from observed values in a regression analysis. In the code chunk below, rmse() of Metrics package is used to compute the RMSE.
 
@@ -1178,9 +1198,11 @@ rmse(test_data_p$resale_price,
      test_data_p$GRF_pred)
 ```
 
-The RMSE value of 32313.2 depicts that the geographical regression prediction model is relatively near the test data resale prices. A lower RMSE indicates a better fit.
+The OLS Multiple Linear Regression has a RMSE error of 48428.6 which depicts the mean error for the HDB resale prices prediction is +/- 48428.6. For Geographically Weighted Random Forest, the mean error for HDB resale prices prediction is +/- 32313.2.
 
-### 7.6.4 Visualising the predicted values
+As we can see, OLS Multiple Linear Regression has a higher RMSE score than Geographically Weighted Random Forest. Therefore, the Geographically Weighted Random Forest is the better model.
+
+### 7.7.4 Visualising the predicted values
 
 Alternatively, scatterplot can be used to visualise the actual resale price and the predicted resale price by using the code chunk below.
 
@@ -1191,7 +1213,6 @@ ggplot(data = test_data_p,
   geom_point()
 ```
 
-From the scatterplot visualisation, it depicts that the actual resale price and the predicted resale prices are not far apart if we do draw a linear line. From the visualisation, it shows majority of the plots are in the scatter area of $400,000. 
 
 # 8. References
 
