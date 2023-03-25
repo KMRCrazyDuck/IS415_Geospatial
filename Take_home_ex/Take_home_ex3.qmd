@@ -2,7 +2,7 @@
 title: "Take Home Exercise 3: Predicting HDB Public Housing Resale Pricies using Geographically Weighted Methods"
 author: "Kwek Ming Rong"
 date: "09 March 2023"
-date-modified: "20 March 2023"
+date-modified: "25 March 2023"
 format: html
 execute:
   eval: true
@@ -1000,6 +1000,8 @@ price_mlr <- lm(resale_price ~ floor_area_sqm +
 summary(price_mlr)
 ```
 
+The building of a non-spatial multiple linear regression adjusted R square value of 0.6857 depicts that the resale prices are accurate as of the 6 months training data. Upon research adjusted R square value of 0.5 to 0.74 is a good value whereas 0.75 and above is a very good value. 
+
 ## 7.3 Geographically Weighted Regression Predictive Method
 
 Calibrating a model to predict HDB resale price by using geographically weighted regression method of GWmodel package.
@@ -1176,6 +1178,8 @@ rmse(test_data_p$resale_price,
      test_data_p$GRF_pred)
 ```
 
+The RMSE value of 32313.2 depicts that the geographical regression prediction model is relatively near the test data resale prices. A lower RMSE indicates a better fit.
+
 ### 7.6.4 Visualising the predicted values
 
 Alternatively, scatterplot can be used to visualise the actual resale price and the predicted resale price by using the code chunk below.
@@ -1186,6 +1190,8 @@ ggplot(data = test_data_p,
            y = resale_price)) +
   geom_point()
 ```
+
+From the scatterplot visualisation, it depicts that the actual resale price and the predicted resale prices are not far apart if we do draw a linear line. From the visualisation, it shows majority of the plots are in the scatter area of $400,000. 
 
 # 8. References
 
