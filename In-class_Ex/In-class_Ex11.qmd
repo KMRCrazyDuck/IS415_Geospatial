@@ -21,13 +21,11 @@ pacman::p_load(tmap, sf, sp, caret, stplanr, reshape2, broom, tidyverse, readr)
 
 ### Importing the OD Data
 
-Firstly, we will import the Passenger Volume by Origin Destination Bus Stops data set downloaded from LTA DataMall, by using read_csv() of readr
-package
+Firstly, we will import the Passenger Volume by Origin Destination Bus Stops data set downloaded from LTA DataMall, by using read_csv() of readr package
 
 ```{r}
 odbus <- read_csv("Data/Aspatial/origin_destination_bus_202210.csv")
 ```
-
 
 ```{r}
 odbus$ORIGIN_PT_CODE <-
@@ -35,7 +33,6 @@ odbus$ORIGIN_PT_CODE <-
 odbus$DESTINATION_PT_CODE <-
   as.factor(odbus$DESTINATION_PT_CODE)
 ```
-
 
 ```{r}
 odbus7_9 <- odbus %>%
@@ -50,7 +47,6 @@ odbus7_9 <- odbus %>%
 ```{r}
 write_rds(odbus7_9, "Data/rds/odbus7_9.rds")
 ```
-
 
 ```{r}
 odbus7_9 <- read_rds("Data/rds/odbus7_9.rds")
@@ -75,7 +71,7 @@ busstop_mpsz <- st_intersection(busstop, mpsz) %>%
   st_drop_geometry()
 ```
 
-Next, we are going to append the planning subzone code from busstop_mpsz data frame on odbus_7_9 data frame.
+Next, we are going to append the planning subzone code from busstop_mpsz data frame on odbus_7\_9 data frame.
 
 ```{r}
 od_data <- left_join(odbus7_9, busstop_mpsz,
@@ -111,7 +107,6 @@ duplicate <- od_data %>%
   filter(n()>1) %>%
   ungroup()
 ```
-
 
 ```{r}
 od_data <- od_data %>%
